@@ -43613,6 +43613,134 @@ var filters = {
 exports.filters = filters;
 },{"@pixi/polyfill":"../node_modules/@pixi/polyfill/lib/polyfill.es.js","@pixi/accessibility":"../node_modules/@pixi/accessibility/lib/accessibility.es.js","@pixi/interaction":"../node_modules/@pixi/interaction/lib/interaction.es.js","@pixi/utils":"../node_modules/@pixi/utils/lib/utils.es.js","@pixi/app":"../node_modules/@pixi/app/lib/app.es.js","@pixi/core":"../node_modules/@pixi/core/lib/core.es.js","@pixi/extract":"../node_modules/@pixi/extract/lib/extract.es.js","@pixi/loaders":"../node_modules/@pixi/loaders/lib/loaders.es.js","@pixi/particles":"../node_modules/@pixi/particles/lib/particles.es.js","@pixi/prepare":"../node_modules/@pixi/prepare/lib/prepare.es.js","@pixi/spritesheet":"../node_modules/@pixi/spritesheet/lib/spritesheet.es.js","@pixi/sprite-tiling":"../node_modules/@pixi/sprite-tiling/lib/sprite-tiling.es.js","@pixi/text-bitmap":"../node_modules/@pixi/text-bitmap/lib/text-bitmap.es.js","@pixi/ticker":"../node_modules/@pixi/ticker/lib/ticker.es.js","@pixi/filter-alpha":"../node_modules/@pixi/filter-alpha/lib/filter-alpha.es.js","@pixi/filter-blur":"../node_modules/@pixi/filter-blur/lib/filter-blur.es.js","@pixi/filter-color-matrix":"../node_modules/@pixi/filter-color-matrix/lib/filter-color-matrix.es.js","@pixi/filter-displacement":"../node_modules/@pixi/filter-displacement/lib/filter-displacement.es.js","@pixi/filter-fxaa":"../node_modules/@pixi/filter-fxaa/lib/filter-fxaa.es.js","@pixi/filter-noise":"../node_modules/@pixi/filter-noise/lib/filter-noise.es.js","@pixi/mixin-cache-as-bitmap":"../node_modules/@pixi/mixin-cache-as-bitmap/lib/mixin-cache-as-bitmap.es.js","@pixi/mixin-get-child-by-name":"../node_modules/@pixi/mixin-get-child-by-name/lib/mixin-get-child-by-name.es.js","@pixi/mixin-get-global-position":"../node_modules/@pixi/mixin-get-global-position/lib/mixin-get-global-position.es.js","@pixi/constants":"../node_modules/@pixi/constants/lib/constants.es.js","@pixi/display":"../node_modules/@pixi/display/lib/display.es.js","@pixi/graphics":"../node_modules/@pixi/graphics/lib/graphics.es.js","@pixi/math":"../node_modules/@pixi/math/lib/math.es.js","@pixi/mesh":"../node_modules/@pixi/mesh/lib/mesh.es.js","@pixi/mesh-extras":"../node_modules/@pixi/mesh-extras/lib/mesh-extras.es.js","@pixi/runner":"../node_modules/@pixi/runner/lib/runner.es.js","@pixi/sprite":"../node_modules/@pixi/sprite/lib/sprite.es.js","@pixi/sprite-animated":"../node_modules/@pixi/sprite-animated/lib/sprite-animated.es.js","@pixi/text":"../node_modules/@pixi/text/lib/text.es.js","@pixi/settings":"../node_modules/@pixi/settings/lib/settings.es.js"}],"icons/frogger.jpg":[function(require,module,exports) {
 module.exports = "/frogger.9a4f1730.jpg";
+},{}],"frog.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Frog = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Frog = /*#__PURE__*/function () {
+  function Frog(x, y) {
+    _classCallCheck(this, Frog);
+
+    var frog = {
+      x: x,
+      y: y
+    };
+  }
+
+  _createClass(Frog, [{
+    key: "draw",
+    value: function draw() {// na start / po tym jak żaba jest win / lose
+    }
+  }, {
+    key: "move",
+    value: function move() {// żaba skacze co jedno pole, jeden button.down = 1 pole
+    }
+  }, {
+    key: "win",
+    value: function win() {// żaba dotarła do domku
+    }
+  }, {
+    key: "lose",
+    value: function lose() {// kolizja / wpadnięcie do wody itp > żaba znika
+      // time > 30s, śmierć
+    }
+  }]);
+
+  return Frog;
+}();
+
+exports.Frog = Frog;
+},{}],"car.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Car = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Car = /*#__PURE__*/function () {
+  function Car(x, y) {
+    _classCallCheck(this, Car);
+
+    var car = {
+      x: x,
+      y: y
+    };
+  }
+
+  _createClass(Car, [{
+    key: "draw",
+    value: function draw() {// start gry, rysuja się przeszkody
+    }
+  }, {
+    key: "move",
+    value: function move() {// automatyczny ruch
+    }
+  }, {
+    key: "acc",
+    value: function acc() {// przyspieszenie (gdy żaba przejdzie do kolejnych etapów)
+    }
+  }]);
+
+  return Car;
+}();
+
+exports.Car = Car;
+},{}],"timer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Timer = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Timer = /*#__PURE__*/function () {
+  // count to 30s, if 30s game over
+  function Timer() {
+    _classCallCheck(this, Timer);
+  }
+
+  _createClass(Timer, [{
+    key: "draw",
+    value: function draw() {}
+  }, {
+    key: "start",
+    value: function start() {// every new frog
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      // frog win / lose
+      c;
+    }
+  }]);
+
+  return Timer;
+}();
+
+exports.Timer = Timer;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -43620,38 +43748,18 @@ var PIXI = _interopRequireWildcard(require("pixi.js"));
 
 var _frogger = _interopRequireDefault(require("./icons/frogger.jpg"));
 
+var _frog = require("./frog");
+
+var _car = require("./car");
+
+var _timer = require("./timer");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
-// and the root stage PIXI.Container
-var app = new PIXI.Application(); // The application will create a canvas element for you that you
-// can then insert into the DOM
-
-document.body.appendChild(app.view); // load the texture we need
-
-app.loader.add('frogger', _frogger.default).load(function (loader, resources) {
-  // This creates a texture from a 'bunny.png' image
-  var frogger = new PIXI.Sprite(resources.frogger.texture); // Setup the position of the bunny
-
-  frogger.x = app.renderer.width / 2;
-  frogger.y = app.renderer.height / 2; // Rotate around the center
-
-  frogger.anchor.x = 0.5;
-  frogger.anchor.y = 0.5; // Add the bunny to the scene we are building
-
-  app.stage.addChild(frogger); // Listen for frame updates
-
-  app.ticker.add(function () {
-    // each frame we spin the bunny around a bit
-    frogger.rotation += 0.01;
-  });
-});
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./icons/frogger.jpg":"icons/frogger.jpg"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./icons/frogger.jpg":"icons/frogger.jpg","./frog":"frog.js","./car":"car.js","./timer":"timer.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -43679,7 +43787,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36487" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40439" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
