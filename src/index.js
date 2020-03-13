@@ -4,4 +4,5 @@ import { Frog } from './frog';
 import { Car } from './car';
 import { Timer } from './timer';
 
+
 // render wszystkich elementów

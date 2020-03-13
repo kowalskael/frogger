@@ -43628,26 +43628,70 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Frog = /*#__PURE__*/function () {
-  function Frog(x, y) {
+  function Frog(x, y, width, height, gameBoard, frogHome) {
     _classCallCheck(this, Frog);
 
-    var frog = {
+    this.frog = {
       x: x,
-      y: y
+      y: y,
+      width: width,
+      height: height
     };
+    this.gameBoard = gameBoard;
+    this.frogHome = frogHome;
   }
 
   _createClass(Frog, [{
     key: "draw",
-    value: function draw() {// na start / po tym jak żaba jest win / lose
+    value: function draw() {
+      // na start / po tym jak żaba jest win / lose, rysowanie na początku ekranu
+      this.frog.x = this.gameBoard.width / 2;
+      this.frog.y = 0;
     }
   }, {
     key: "move",
-    value: function move() {// żaba skacze co jedno pole, jeden button.down = 1 pole
+    value: function move() {
+      var _this = this;
+
+      // one key down, one square move
+      var borders = this.frog.x > 0 && this.frog.x < this.gameBoard.width && this.frog.y > 0 && this.frog.y < this.gameBoard.height; // gameboard borders
+
+      if (borders) {
+        addEventListener("keydown", function (e) {
+          switch (e.key) {
+            case "ArrowDown":
+              _this.frog.y -= 1; // move frog down
+
+              break;
+
+            case "ArrowUp":
+              _this.frog.y += 1; // move frog up
+
+              break;
+
+            case "ArrowLeft":
+              _this.frog.x -= 1; // move frog left
+
+              break;
+
+            case "ArrowRight":
+              _this.frog.x += 1; // move frog right
+
+              break;
+
+            default:
+              return;
+          }
+        });
+      }
     }
   }, {
     key: "win",
-    value: function win() {// żaba dotarła do domku
+    value: function win() {
+      if (this.frog.x === this.frogHome.x && this.frog.y && this.frogHome.y) {
+        this.frog.x = this.frogHome.x; // zmiana wizualna żaby
+        // restart zegara
+      }
     }
   }, {
     key: "lose",

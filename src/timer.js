@@ -4,7 +4,6 @@ export class Timer { // count to 30s, if 30s game over
 
   }
 
-
   draw() {
 
   }
