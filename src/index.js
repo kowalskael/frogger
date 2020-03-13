@@ -24,7 +24,7 @@ app.loader.add('frogger', frogger).load((loader, resources) => {
   frogger.anchor.y = 0.5;
 
   // Add the bunny to the scene we are building
-  app.stage.addChild(bunny);
+  app.stage.addChild(frogger);
 
   // Listen for frame updates
   app.ticker.add(() => {
