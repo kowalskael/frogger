@@ -1,19 +1,27 @@
 export class Car {
-  constructor(x, y) {
-    const car = { x, y };
+  constructor(x, y, width, height, gameBoard, orderNumber, acceleration) {
+    this.car = { x, y, width, height };
+    this.gameBoard = gameBoard;
+    this.speed = 1;
+    this.orderNumber = orderNumber;
+    this.acceleration = acceleration;
   }
 
   draw() {
-    // start gry, rysuja się przeszkody
+    this.car.x = 0;
+    this.car.y = this.orderNumber; // if there are 3 cars, each is placed on different value of y-axis
   }
 
   move() {
-    // automatyczny ruch
+    this.car.x += this.speed; // moving only within x-axis
   }
 
-  acc() {
-    // przyspieszenie (gdy żaba przejdzie do kolejnych etapów)
+  acceleration() {
+    this.speed *= this.acceleration; // count the acceleration, based on level of the game
   }
 
+  stop() {
+    // stop in case of collision, time run out etc.
+  }
 
 }

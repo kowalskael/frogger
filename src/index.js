@@ -5,4 +5,4 @@ import { Car } from './car';
 import { Timer } from './timer';
 
 
-// render wszystkich elementów
+// render them all

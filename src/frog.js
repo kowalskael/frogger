@@ -5,7 +5,7 @@ export class Frog {
     this.frogHome = frogHome;
   }
 
-  draw() { // na start / po tym jak żaba jest win / lose, rysowanie na początku ekranu
+  draw() { // start, after the prev frog is win/lose
     this.frog.x = this.gameBoard.width/2;
     this.frog.y = 0;
   }
@@ -27,8 +27,7 @@ export class Frog {
       default:
         return;
     }
-  }
-
+  };
 
   move() { // one key down, one square move
     const borders = this.frog.x > 0 && this.frog.x < this.gameBoard.width && this.frog.y > 0 && this.frog.y < this.gameBoard.height; // gameboard borders
@@ -36,19 +35,17 @@ export class Frog {
     if (borders) {
       addEventListener( "keydown", this.keyDown );
     }
-
   }
 
   win() {
     if (this.frog.x === this.frogHome.x && this.frog.y && this.frogHome.y) {
       removeEventListener( "keydown", this.keyDown );
-      // zmiana wizualna żaby
-      // restart zegara
+      // visual change of the frog
+      // timer restart
     }
   }
 
-  lose() {
-    // kolizja / wpadnięcie do wody itp > żaba znika
-    // time > 30s, śmierć
+  lose() { // collision, time run out etc.
+    removeEventListener( "keydown", this.keyDown );
   }
 }

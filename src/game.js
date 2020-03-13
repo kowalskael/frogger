@@ -1,4 +1,9 @@
-// funkcjonalność całej gry
+// game functionality
 
-// zderzenia
-// dotarcie żaby do domku
+
+// game start
+// collisions
+// frog gets home
+// time run out
+// create new frog, after first is win/lose
+// game over
