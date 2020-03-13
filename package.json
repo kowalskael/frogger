@@ -1,0 +1,24 @@
+{
+  "name": "frogger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kowalskael/frogger.git"
+  },
+  "author": "elzbieta kowalska <kowalska.el@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kowalskael/frogger/issues"
+  },
+  "homepage": "https://github.com/kowalskael/frogger#readme",
+  "dependencies": {
+    "pixi.js": "^5.2.1"
+  }
+}
