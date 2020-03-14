@@ -43627,76 +43627,83 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var Frog = /*#__PURE__*/function () {
-  function Frog(x, y, width, height, gameBoard, frogHome) {
+  function Frog(canvas) {
+    var _this = this;
+
     _classCallCheck(this, Frog);
+
+    _defineProperty(this, "keyDown", function (e) {
+      // przypisanie klawiszy do zmiany położenia żaby
+      switch (e.key) {
+        case "ArrowDown":
+          _this.frog.y -= 1; // move frog down
+
+          break;
+
+        case "ArrowUp":
+          _this.frog.y += 1; // move frog up
+
+          break;
+
+        case "ArrowLeft":
+          _this.frog.x -= 1; // move frog left
+
+          break;
+
+        case "ArrowRight":
+          _this.frog.x += 1; // move frog right
+
+          break;
+
+        default:
+          return;
+      }
+    });
 
     this.frog = {
       x: x,
       y: y,
       width: width,
       height: height
-    };
-    this.gameBoard = gameBoard;
-    this.frogHome = frogHome;
+    }; // położenie i wielkość żaby
+
+    this.canvas = canvas; // przypisanie od canvasu, w którym dzieje się gra
   }
 
   _createClass(Frog, [{
     key: "draw",
     value: function draw() {
-      // na start / po tym jak żaba jest win / lose, rysowanie na początku ekranu
-      this.frog.x = this.gameBoard.width / 2;
-      this.frog.y = 0;
+      // start, after the prev frog is win/lose
+      this.frog.x = this.canvas.width / 2; // położenie żaby na środku w osi x
+
+      this.frog.y = 0; // położenie żaby na samym dole pola gry
     }
   }, {
     key: "move",
     value: function move() {
-      var _this = this;
-
       // one key down, one square move
-      var borders = this.frog.x > 0 && this.frog.x < this.gameBoard.width && this.frog.y > 0 && this.frog.y < this.gameBoard.height; // gameboard borders
+      var borders = this.frog.x > 0 && this.frog.x < this.canvas.width && this.frog.y > 0 && this.frog.y < this.canvas.height; // gameboard borders
 
       if (borders) {
-        addEventListener("keydown", function (e) {
-          switch (e.key) {
-            case "ArrowDown":
-              _this.frog.y -= 1; // move frog down
-
-              break;
-
-            case "ArrowUp":
-              _this.frog.y += 1; // move frog up
-
-              break;
-
-            case "ArrowLeft":
-              _this.frog.x -= 1; // move frog left
-
-              break;
-
-            case "ArrowRight":
-              _this.frog.x += 1; // move frog right
-
-              break;
-
-            default:
-              return;
-          }
-        });
+        // blokada wyjścia żaby poza ekran
+        addEventListener("keydown", this.keyDown); // przypisanie funkcjonalności klawiszy
       }
     }
   }, {
     key: "win",
     value: function win() {
-      if (this.frog.x === this.frogHome.x && this.frog.y && this.frogHome.y) {
-        this.frog.x = this.frogHome.x; // zmiana wizualna żaby
-        // restart zegara
-      }
+      removeEventListener("keydown", this.keyDown); // usuń możliwość ruszania żabą
+      // visual change of the frog
     }
   }, {
     key: "lose",
-    value: function lose() {// kolizja / wpadnięcie do wody itp > żaba znika
-      // time > 30s, śmierć
+    value: function lose() {
+      // collision, time run out etc.
+      removeEventListener("keydown", this.keyDown); // usuń możliwość ruszania żabą
+      // visual change of the frog
     }
   }]);
 
@@ -43719,26 +43726,32 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Car = /*#__PURE__*/function () {
-  function Car(x, y) {
+  function Car(canvas) {
     _classCallCheck(this, Car);
 
-    var car = {
+    this.car = {
       x: x,
-      y: y
+      y: y,
+      width: width,
+      height: height
     };
+    this.canvas = canvas;
+    this.speed = 1;
   }
 
   _createClass(Car, [{
     key: "draw",
-    value: function draw() {// start gry, rysuja się przeszkody
+    value: function draw() {
+      this.car.x = 0; // this.car.y = 1; placed where on y-axis ??
     }
   }, {
     key: "move",
-    value: function move() {// automatyczny ruch
+    value: function move() {
+      this.car.x += this.speed; // moving only within x-axis
     }
   }, {
-    key: "acc",
-    value: function acc() {// przyspieszenie (gdy żaba przejdzie do kolejnych etapów)
+    key: "stop",
+    value: function stop() {// stop in case of collision, time run out etc.
     }
   }]);
 
@@ -43760,24 +43773,48 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var Timer = /*#__PURE__*/function () {
-  // count to 30s, if 30s game over
-  function Timer() {
+  function Timer(container) {
+    var _this = this;
+
     _classCallCheck(this, Timer);
+
+    _defineProperty(this, "timerRAF", void 0);
+
+    _defineProperty(this, "rAFCallback", function () {
+      _this.currTimeValue = performance.now();
+      _this.diffValue = _this.currTimeValue - _this.startTime;
+
+      _this.display();
+
+      _this.timerRAF = requestAnimationFrame(_this.rAFCallback);
+    });
+
+    this.container = container;
+    this.display();
   }
 
   _createClass(Timer, [{
-    key: "draw",
-    value: function draw() {}
+    key: "display",
+    value: function display() {
+      this.sec = Math.floor(this.diffValue / 1000) % 60;
+      this.min = Math.floor(this.diffValue / 60000) % 60;
+      this.container.innerText = "".concat(this.min ? this.min > 9 ? this.min : "0".concat(this.min) : '00', ":").concat(this.sec > 9 ? this.sec : "0".concat(this.sec));
+    }
   }, {
     key: "start",
-    value: function start() {// every new frog
+    value: function start() {
+      //
+      this.timerRAF = requestAnimationFrame(this.rAFCallback);
+      this.startTime = performance.now();
     }
   }, {
     key: "stop",
     value: function stop() {
-      // frog win / lose
-      c;
+      //
+      cancelAnimationFrame(this.timerRAF);
     }
   }]);
 
@@ -43785,12 +43822,13 @@ var Timer = /*#__PURE__*/function () {
 }();
 
 exports.Timer = Timer;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"game.js":[function(require,module,exports) {
 "use strict";
 
-var PIXI = _interopRequireWildcard(require("pixi.js"));
-
-var _frogger = _interopRequireDefault(require("./icons/frogger.jpg"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Game = void 0;
 
 var _frog = require("./frog");
 
@@ -43798,12 +43836,100 @@ var _car = require("./car");
 
 var _timer = require("./timer");
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// game functionality
+var Game = /*#__PURE__*/function () {
+  function Game(canvas) {
+    _classCallCheck(this, Game);
+
+    this.canvas = canvas;
+  }
+
+  _createClass(Game, [{
+    key: "createNew",
+    value: function createNew() {
+      var frog = new _frog.Frog(this.canvas);
+      this.frog = frog;
+      var car = new _car.Car(this.canvas);
+      this.car = car;
+      var timer = new _timer.Timer(this.canvas);
+      this.timer = timer;
+    }
+  }, {
+    key: "round",
+    value: function round() {
+      this.createNew(); // stwórz wszystkie elementy
+
+      this.frog.draw(); // narysuj żabę
+
+      this.car.draw(); // narysuj samochód
+
+      this.timer.display(); // pokaż timer
+      // game start
+
+      if (button.clicked) {
+        this.frog.move(); // enable frog key events
+
+        this.car.move(); // automate car movement
+
+        this.timer.start(); // timer start
+        // collisions
+
+        if (this.frog.x === this.car.x && this.frog.y === this.car.y) {
+          // if frog is in the same x/y as car
+          this.frog.lose(); // przegrana żaby
+
+          this.timer.stop(); // zatrzymaj timer
+
+          this.round(); // zacznij od nowa
+        } // frog gets home
+
+
+        if (this.frog.y && this.canvas.height) {
+          // if frog get to last line, there is win
+          this.frog.win(); // żaba wygrywa
+
+          this.timer.stop(); // zatrzymaj timer
+
+          this.round(); // zacznij od nowa
+        }
+
+        if (this.timer > 3000) {
+          // if time run out
+          this.timer.stop(); // timer stops
+
+          this.frog.lose(); // frog is dead
+
+          this.round(); // start once again
+        }
+      }
+    }
+  }]);
+
+  return Game;
+}();
+
+exports.Game = Game;
+},{"./frog":"frog.js","./car":"car.js","./timer":"timer.js"}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var PIXI = _interopRequireWildcard(require("pixi.js"));
+
+var _frogger = _interopRequireDefault(require("./icons/frogger.jpg"));
+
+var _game = require("./game");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./icons/frogger.jpg":"icons/frogger.jpg","./frog":"frog.js","./car":"car.js","./timer":"timer.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./icons/frogger.jpg":"icons/frogger.jpg","./game":"game.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -43831,7 +43957,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40439" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46783" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
