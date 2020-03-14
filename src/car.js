@@ -7,7 +7,7 @@ export class Car {
 
   draw() {
     this.car.x = 0;
-    this.car.y = 1; // placed on second value of y-axis
+    // this.car.y = 1; placed where on y-axis ??
   }
 
   move() {
