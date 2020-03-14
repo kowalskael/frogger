@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "lint": "eslint src --ext .js",
+    "lint-fix": "eslint src --ext .js --fix"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,10 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "babel-eslint": "^8.2.6",
     "babel-install": "2.1.0",
-    "eslint": "^4.19.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "lint": "^0.7.0",
     "parcel": "^1.12.4"
   },
   "dependencies": {
