@@ -1,12 +1,12 @@
 export class Frog {
-  constructor(x, y, width, height, gameBoard, frogHome) {
+
+  constructor(canvas) {
     this.frog = { x, y, width, height };
-    this.gameBoard = gameBoard;
-    this.frogHome = frogHome;
+    this.canvas = canvas;
   }
 
   draw() { // start, after the prev frog is win/lose
-    this.frog.x = this.gameBoard.width/2;
+    this.frog.x = this.canvas.width/2;
     this.frog.y = 0;
   }
 
@@ -30,7 +30,7 @@ export class Frog {
   };
 
   move() { // one key down, one square move
-    const borders = this.frog.x > 0 && this.frog.x < this.gameBoard.width && this.frog.y > 0 && this.frog.y < this.gameBoard.height; // gameboard borders
+    const borders = this.frog.x > 0 && this.frog.x < this.canvas.width && this.frog.y > 0 && this.frog.y < this.canvas.height; // gameboard borders
 
     if (borders) {
       addEventListener( "keydown", this.keyDown );
@@ -38,14 +38,14 @@ export class Frog {
   }
 
   win() {
-    if (this.frog.x === this.frogHome.x && this.frog.y && this.frogHome.y) {
-      removeEventListener( "keydown", this.keyDown );
-      // visual change of the frog
-      // timer restart
-    }
+    removeEventListener( "keydown", this.keyDown );
+    // visual change of the frog
+    // timer restart
   }
 
   lose() { // collision, time run out etc.
     removeEventListener( "keydown", this.keyDown );
+    // visual change
+    // timer restart
   }
 }
