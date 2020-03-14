@@ -3,33 +3,39 @@ import { Car } from './car';
 import { Timer } from './timer';
 
 // game functionality
+export class Game {
+  constructor(canvas) {
+    this.canvas = canvas;
+  }
 
-function createFrog() {
-const frog = new Frog(stage);
-frog.draw();
-car.draw();
+  round() {
+    const frog = new Frog(this.canvas);
+    const car = new Car(this.canvas);
+    frog.draw();
+    car.draw();
 
-// game start
-if (button.clicked) {
-frog.move();
-car.move();
-timer.start();
+  // game start
+    if (button.clicked) {
+      frog.move(); // enable frog key events
+      car.move(); // automate car movement
+      timer.start(); // timer start
 
-// collisions
-// if frog is in the same x/y as car
+      // collisions
+      // if frog is in the same x/y as car
 
-// frog gets home
-if (this.frog.y && this.canvas.height) {
-    frog.win();
+      // frog gets home
+      if (this.frog.y && this.canvas.height) { // if frog get to last line, there is win
+        frog.win();
+      }
+
+      if (timer > 3000) { // if time run out
+        timer.stop(); // timer stops
+        frog.lose(); // frog is dead
+        round(); // start once again
+      }
+    }
+  }
 }
 
-// time run out
-if (timer > 3000) {
-    timer.stop();
-    frog.lose();
-    createFrog();
-}
-}
-}
 
 

@@ -1,5 +1,4 @@
 export class Frog {
-
   constructor(canvas) {
     this.frog = { x, y, width, height };
     this.canvas = canvas;
