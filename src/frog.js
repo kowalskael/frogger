@@ -1,27 +1,41 @@
 export class Frog {
-  constructor(canvas) {
-    this.frog = { x, y, width, height }; // położenie i wielkość żaby
+  constructor(canvas, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.frog = { x, y }; // położenie i wielkość żaby
     this.canvas = canvas; // przypisanie od canvasu, w którym dzieje się gra
   }
 
   draw() { // start, after the prev frog is win/lose
-    this.frog.x = this.canvas.width/2; // położenie żaby na środku w osi x
-    this.frog.y = 0; // położenie żaby na samym dole pola gry
+    this.width = 30;
+    this.height = 30;
+    this.x = this.canvas.view.width/2; // położenie żaby na środku w osi x
+    this.y = this.canvas.view.height - this.height; // położenie żaby na samym dole pola gry
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
     switch (e.key) {
       case "ArrowDown":
-        this.frog.y -= 1; // move frog down
+        if (this.y < this.canvas.view.height - this.height) {
+          this.y += this.height; // move frog down
+        }
         break;
       case "ArrowUp":
-        this.frog.y += 1; // move frog up
+        if (this.y > this.height/2) {
+          this.y -= this.height; // move frog up
+        }
         break;
       case "ArrowLeft":
-        this.frog.x -= 1; // move frog left
+        if (this.x > this.width/2) {
+          this.x -= this.width; // move frog left
+        }
         break;
       case "ArrowRight":
-        this.frog.x += 1; // move frog right
+        if (this.x < this.canvas.view.width - this.width) {
+          this.x += this.width; // move frog right
+        }
         break;
       default:
         return;
@@ -29,11 +43,7 @@ export class Frog {
   };
 
   move() { // one key down, one square move
-    const borders = this.frog.x > 0 && this.frog.x < this.canvas.width && this.frog.y > 0 && this.frog.y < this.canvas.height; // gameboard borders
-
-    if (borders) { // blokada wyjścia żaby poza ekran
-      addEventListener( "keydown", this.keyDown ); // przypisanie funkcjonalności klawiszy
-    }
+    addEventListener( "keydown", this.keyDown ); // przypisanie funkcjonalności klawiszy
   }
 
   win() {
