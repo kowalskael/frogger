@@ -6,17 +6,25 @@ export class Game {
     this.frog = frog;
     this.car = car;
     this.timer = timer;
+    this.flag = true;
   }
 
-  playRound() {
-    this.frog.draw(); // narysuj żabę
-    this.car.draw(); // narysuj samochód
+  draw() {
+     this.frog.draw(); // narysuj żabę
+     this.car.draw(); // narysuj samochód
+  }
 
-    // game start
-    document.getElementById('button').onclick = () => {
-      document.getElementById('button').style.display = "none";
+  play() { // game start
+  if (this.flag) {
       this.frog.move(); // enable frog key events
-      this.car.move(); // automate car movement
+      this.car.move();
+    }
+  }
+
+  collision() {
+    if (this.frog.x === this.car.x && this.frog.y === this.car.y) {
+      this.frog.lose();
+      this.flag = false;
     }
   }
 }

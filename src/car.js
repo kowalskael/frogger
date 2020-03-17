@@ -23,8 +23,4 @@ export class Car {
       this.x = 0;
     }
   }
-
-  stop() {
-    // stop in case of collision, time run out etc.
-  }
 }

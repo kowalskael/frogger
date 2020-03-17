@@ -27,7 +27,7 @@ app.loader.add('frogger', frogger).add('car', car).load((loader, resources) => {
   const car = new Car(app);
 
   const game = new Game(app, frog, car);
-  game.playRound();
+  game.draw();
 
   carSprite.width = game.car.width;
   carSprite.height = game.car.height;
@@ -35,17 +35,28 @@ app.loader.add('frogger', frogger).add('car', car).load((loader, resources) => {
   froggerSprite.width = game.frog.width;
   froggerSprite.height = game.frog.height;
 
+  froggerSprite.x = game.frog.x;
+  froggerSprite.y = game.frog.y;
+  carSprite.x = game.car.x;
+  carSprite.y = game.car.y;
+
   // Add the frog to the scene
   app.stage.addChild(froggerSprite);
   app.stage.addChild(carSprite);
 
-  // Listen for frame updates
-  app.ticker.add(() => {
-    froggerSprite.x = game.frog.x;
-    froggerSprite.y = game.frog.y;
-    carSprite.x = game.car.x;
-    carSprite.y = game.car.y;
-  });
+  document.getElementById('button').onclick = () => {
+    document.getElementById('button').style.display = "none";
+    // Listen for frame updates
+    app.ticker.add(() => {
+      froggerSprite.x = game.frog.x;
+      froggerSprite.y = game.frog.y;
+      carSprite.x = game.car.x;
+      carSprite.y = game.car.y;
+      game.play();
+      game.collision();
+    });
+  }
+
 });
 
 // window.addEventListener("resize", event => { resizeTo(app.view); });
