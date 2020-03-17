@@ -12,8 +12,8 @@ export class Car {
   draw() {
     this.width = 30;
     this.height = 30;
-    this.x = this.canvas.view.width/2;
-    this.y = this.canvas.view.height/2;
+    this.x = this.canvas.view.width / 2;
+    this.y = this.canvas.view.height / 2;
     // this.car.y = 1; placed where on y-axis ??
   }
 
@@ -27,5 +27,4 @@ export class Car {
   stop() {
     // stop in case of collision, time run out etc.
   }
-
 }
