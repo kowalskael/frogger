@@ -3,6 +3,7 @@ import { Car } from './car';
 import { Timer } from './timer';
 
 // game functionality
+// game loop
 export class Game {
  constructor(canvas) {
    this.canvas = canvas;

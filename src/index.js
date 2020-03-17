@@ -19,31 +19,34 @@ document.body.appendChild(app.view);
 // resources have loaded.
 app.loader.add('frogger', frogger).add('car', car).load((loader, resources) => {
   // This creates a texture from a 'bunny.png' image
-  const frogger = new PIXI.Sprite(resources.frogger.texture);
-  const car = new PIXI.Sprite(resources.car.texture);
+  const froggerSprite = new PIXI.Sprite(resources.frogger.texture);
+  const carSprite = new PIXI.Sprite(resources.car.texture);
 
-  car.x = app.view.width/2;
-  car.y = app.view.height/2;
-  car.width = 30;
-  car.height = 30;
   //create frog object based on Frog class
   const frog = new Frog(app);
   frog.draw();
 
-  frogger.width = frog.width;
-  frogger.height = frog.height;
-  frogger.x = frog.x;
-  frogger.y = frog.y;
+  const car = new Car(app);
+  car.draw();
+
+  carSprite.width = car.width;
+  carSprite.height = car.height;
+
+  froggerSprite.width = frog.width;
+  froggerSprite.height = frog.height;
 
   // Add the frog to the scene
-  app.stage.addChild(frogger);
-  app.stage.addChild(car);
+  app.stage.addChild(froggerSprite);
+  app.stage.addChild(carSprite);
 
   // Listen for frame updates
   app.ticker.add(() => {
-    frogger.x = frog.x;
-    frogger.y = frog.y;
+    froggerSprite.x = frog.x;
+    froggerSprite.y = frog.y;
+    carSprite.x = car.x;
+    carSprite.y = car.y;
     frog.move();
+    car.move();
   });
 });
 
