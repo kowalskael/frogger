@@ -10,16 +10,16 @@ export class Car {
   }
 
   draw() {
-    this.width = 30;
-    this.height = 30;
-    this.x = this.canvas.view.width / 2;
-    this.y = this.canvas.view.height / 2;
+    this.width = this.canvas.scale;
+    this.height = this.canvas.scale;
+    this.x = (this.canvas.width/2) * this.canvas.scale - this.width/2; // położenie żaby na środku w osi x
+    this.y = (this.canvas.height/2) * this.canvas.scale - this.height/2;
     // this.car.y = 1; placed where on y-axis ??
   }
 
   move() {
     this.x += this.speed; // moving only within x-axis
-    if (this.x > this.canvas.view.width) {
+    if (this.x > (this.canvas.width * this.canvas.scale)) {
       this.x = 0;
     }
   }

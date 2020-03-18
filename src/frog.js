@@ -9,16 +9,17 @@ export class Frog {
   }
 
   draw() { // start, after the prev frog is win/lose
-    this.width = 30;
-    this.height = 30;
-    this.x = this.canvas.view.width / 2; // położenie żaby na środku w osi x
-    this.y = this.canvas.view.height - this.height; // położenie żaby na samym dole pola gry
+    this.width = this.canvas.scale;
+    this.height = this.canvas.scale;
+    this.x = (this.canvas.width/2) * this.canvas.scale - this.width/2; // położenie żaby na środku w osi x
+    this.y = (this.canvas.height * this.canvas.scale) - this.height; // położenie żaby na samym dole pola gry
+    console.log(this.x)
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
     switch (e.key) {
       case 'ArrowDown':
-        if (this.y < this.canvas.view.height - this.height) {
+        if (this.y < (this.canvas.height * this.canvas.scale) - this.height) {
           this.y += this.height; // move frog down
         }
         break;
@@ -33,7 +34,7 @@ export class Frog {
         }
         break;
       case 'ArrowRight':
-        if (this.x < this.canvas.view.width - this.width) {
+        if (this.x < (this.canvas.width * this.canvas.scale) - this.width) {
           this.x += this.width; // move frog right
         }
         break;

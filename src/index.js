@@ -6,11 +6,11 @@ import { Frog } from './frog';
 import { Car } from './car';
 
 // render them all
-
+const canvas = { width: 10, height: 5, scale: 30}
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
-const app = new PIXI.Application({ width: 600, height: 600, backgroundColor: 0x000000 });
+const app = new PIXI.Application({ width: canvas.width * canvas.scale, height: canvas.height * canvas.scale, backgroundColor: 0x000000 });
 app.view.style.border = '1px solid #fff';
 document.body.appendChild(app.view);
 
@@ -23,10 +23,10 @@ app.loader.add('frogger', frogger).add('car', car).load((loader, resources) => {
   const carSprite = new PIXI.Sprite(resources.car.texture);
 
   // create frog object based on Frog class
-  const frog = new Frog(app);
-  const car = new Car(app);
+  const frog = new Frog(canvas);
+  const car = new Car(canvas);
 
-  const game = new Game(app, frog, car);
+  const game = new Game(canvas, frog, car);
   game.draw();
 
   carSprite.width = game.car.width;

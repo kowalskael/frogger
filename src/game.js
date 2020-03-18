@@ -22,9 +22,7 @@ export class Game {
   }
 
   collision() {
-    if (this.frog.x === this.car.x && this.frog.y === this.car.y) {
-      this.frog.lose();
-      this.flag = false;
-    }
+  
+
   }
 }
