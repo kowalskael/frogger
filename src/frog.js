@@ -6,6 +6,7 @@ export class Frog {
     this.height = height;
     this.frog = { x, y }; // położenie i wielkość żaby
     this.canvas = canvas; // przypisanie od canvasu, w którym dzieje się gra
+    this.flag = true;
   }
 
   draw() { // start, after the prev frog is win/lose
@@ -43,7 +44,9 @@ export class Frog {
   };
 
   move() { // one key down, one square move
-    addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    if (this.flag) {
+      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    }
   }
 
   win() {
@@ -53,6 +56,7 @@ export class Frog {
 
   lose() { // collision, time run out etc.
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
+    this.flag = false;
     // visual change of the frog
   }
 }

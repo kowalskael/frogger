@@ -1,3 +1,5 @@
+import { carArray } from './index';
+
 export class Car {
   constructor(canvas, x, y, width, height) {
     this.x = x;
@@ -12,9 +14,8 @@ export class Car {
   draw() {
     this.width = this.canvas.scale;
     this.height = this.canvas.scale;
-    this.x = (this.canvas.width/2) * this.canvas.scale - this.width/2; // położenie żaby na środku w osi x
-    this.y = (this.canvas.height/2) * this.canvas.scale - this.height/2;
-    // this.car.y = 1; placed where on y-axis ??
+    this.x = carArray.indexOf(this) * 2 * this.canvas.scale; // położenie żaby na środku w osi x
+    this.y = (this.canvas.height - 2 - carArray.indexOf(this)) * this.canvas.scale;
   }
 
   move() {
