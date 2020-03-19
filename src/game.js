@@ -1,3 +1,5 @@
+import { distance, range, collision } from './math';
+
 // game functionality
 // game loop
 export class Game {
@@ -22,7 +24,10 @@ export class Game {
   }
 
   collision() {
-  
+    if(collision(this.frog, this.car)) {
+      this.frog.lose();
+      this.flag = false;
+    };
 
   }
 }

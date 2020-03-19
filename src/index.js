@@ -6,7 +6,7 @@ import { Frog } from './frog';
 import { Car } from './car';
 
 // render them all
-const canvas = { width: 10, height: 5, scale: 30}
+const canvas = { width: 10, height: 5, scale: 30 };
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
