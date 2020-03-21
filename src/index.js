@@ -1,38 +1,39 @@
 import * as PIXI from 'pixi.js';
 import frogTexture from './icons/frogger.svg';
+import frogTextureDead from './icons/frogger_dead.svg';
 import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
 import { Car } from './car';
 
 // render them all
-const canvas = { width: 10, height: 4, scale: 30 };
-const home = { width: canvas.scale, height: canvas.scale, x: (canvas.width/2) * canvas.scale - canvas.scale/2, y: 0};
-export const carArray = [new Car(canvas), new Car(canvas)]; // array z przeszkodami
+const board = { width: 10, height: 4, scale: 30 };
+const home = { width: board.scale, height: board.scale, x: (board.width/2) * board.scale - board.scale/2, y: 0};
+export const carArray = [new Car(board), new Car(board)]; // array z przeszkodami
 
 // The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
+// with a fallback to a board render. It will also setup the ticker
 // and the root stage PIXI.Container
-const app = new PIXI.Application({ width: canvas.width * canvas.scale, height: canvas.height * canvas.scale, backgroundColor: 0x000000 });
+const app = new PIXI.Application({ width: board.width * board.scale, height: board.height * board.scale, backgroundColor: 0x000000 });
 app.view.style.border = '2px solid #A1BC00';
 document.body.appendChild(app.view);
 
 // load the texture we need
 // The `load` method loads the queue of resources, and calls the passed in callback called once all
 // resources have loaded.
-app.loader.add('frogTexture', frogTexture).add('carTexture', carTexture).load((loader, resources) => {
+app.loader.add('frogTexture', frogTexture).add('frogTextureDead', frogTextureDead).add('carTexture', carTexture).load((loader, resources) => {
   // This creates a texture from a 'bunny.png' image
 
-  const frogSprite = new PIXI.Sprite(resources.frogTexture.texture);
+  let frogSprite = new PIXI.Sprite(resources.frogTexture.texture);
   const carSprite0 = new PIXI.Sprite(resources.carTexture.texture);
   const carSprite1 = new PIXI.Sprite(resources.carTexture.texture);
 
   // create frog object based on Frog class
-  const frog = new Frog(canvas);
+  const frog = new Frog(board);
   const car0 = carArray[0];
   const car1 = carArray[1];
 
-  const game = new Game(canvas, frog, car0, car1, home);
+  const game = new Game(board, frog, car0, car1, home);
   game.draw();
 
   carSprite0.width = game.car0.width;
@@ -70,8 +71,11 @@ app.loader.add('frogTexture', frogTexture).add('carTexture', carTexture).load((l
 
       game.play();
 
-      game.collision(game.frog, car0);
-      game.collision(game.frog, car1);
+      if (game.lose(game.frog, car0)) {
+        // change texture
+      }
+
+      game.lose(game.frog, car1);
 
       game.win();
     });

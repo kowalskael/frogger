@@ -1,26 +1,25 @@
 export class Frog {
-  constructor(canvas, x, y, width, height) {
+  constructor(board, x, y, width, height) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.frog = { x, y }; // położenie i wielkość żaby
-    this.canvas = canvas; // przypisanie od canvasu, w którym dzieje się gra
+    this.board = board; // przypisanie od canvasu, w którym dzieje się gra
     this.flag = true;
   }
 
   draw() { // start, after the prev frog is win/lose
-    this.width = this.canvas.scale;
-    this.height = this.canvas.scale;
-    this.x = (this.canvas.width/2) * this.canvas.scale - this.width/2; // położenie żaby na środku w osi x
-    this.y = (this.canvas.height * this.canvas.scale) - this.height; // położenie żaby na samym dole pola gry
-    console.log(this.x)
+    this.width = this.board.scale;
+    this.height = this.board.scale;
+    this.x = (this.board.width/2) * this.board.scale - this.width/2; // położenie żaby na środku w osi x
+    this.y = (this.board.height * this.board.scale) - this.height; // położenie żaby na samym dole pola gry
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
     switch (e.key) {
       case 'ArrowDown':
-        if (this.y < (this.canvas.height * this.canvas.scale) - this.height) {
+        if (this.y < (this.board.height * this.board.scale) - this.height) {
           this.y += this.height; // move frog down
         }
         break;
@@ -35,7 +34,7 @@ export class Frog {
         }
         break;
       case 'ArrowRight':
-        if (this.x < (this.canvas.width * this.canvas.scale) - this.width) {
+        if (this.x < (this.board.width * this.board.scale) - this.width) {
           this.x += this.width; // move frog right
         }
         break;
@@ -51,12 +50,10 @@ export class Frog {
 
   win() {
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
-    // visual change of the frog
   }
 
   lose() { // collision, time run out etc.
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
     this.flag = false;
-    // visual change of the frog
   }
 }
