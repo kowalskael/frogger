@@ -3,7 +3,7 @@ import { distance, range, collisionDetection } from './math';
 // game functionality
 // game loop
 export class Game {
-  constructor(board, frog, car0, car1, home, timer) {
+  constructor(board, frog, car0, car1, home, timer,) {
     this.board = board;
     this.frog = frog;
     this.car0 = car0;
@@ -11,6 +11,16 @@ export class Game {
     this.home = home;
     this.timer = timer;
     this.flag = true;
+  }
+
+  // game.js rysuje wszystkie obiekty - jak ma to zrobić ?
+  // wprowadza funkcjonalność
+
+  assign(sprite, object) {
+    sprite.width = object.width;
+    sprite.height = object.height;
+    sprite.x = object.x;
+    sprite.y = object.y;
   }
 
   draw() {
@@ -28,12 +38,14 @@ export class Game {
   lose(frog, car) {
     if(collisionDetection(frog, car)) {
       this.frog.lose();
+      console.log('lose');
     };
   }
 
   win() {
     if(collisionDetection(this.frog, this.home)) {
       this.frog.win();
+       console.log('win');
     }
   }
 }
