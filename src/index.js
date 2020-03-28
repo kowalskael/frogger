@@ -44,7 +44,7 @@ app.loader.add('frogTexture', frogTexture).add('frogTextureDead', frogTextureDea
     app.stage.addChild(frogSprite);
     app.stage.addChild(carSprite0);
     app.stage.addChild(carSprite1);
-    
+
     gameLoop();
   }
 
@@ -78,9 +78,8 @@ function processInput() {
 }
 
 function update() { // advances the game simulation one step, runs AI, then physics
-  game.play();
-  game.lose(frog, car0);
-  game.lose(frog, car1);
+  game.animate();
+  game.lose();
   game.win();
 }
 

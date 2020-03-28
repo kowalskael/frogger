@@ -18,7 +18,7 @@ export class Car {
     this.y = (this.board.height - 2 - carArray.indexOf(this)) * this.board.scale;
   }
 
-  move() {
+  animate() {
     this.x += this.speed; // moving only within x-axis
     if (this.x > (this.board.width * this.board.scale)) {
       this.x = 0;

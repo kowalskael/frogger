@@ -22,13 +22,13 @@ export class Game {
      this.car1.draw(); // narysuj samochód
   }
 
-  play() { // game start
-    this.car0.move();
-    this.car1.move();
+  animate() { // game start
+    this.car0.animate();
+    this.car1.animate();
   }
 
-  lose(frog, car) {
-    if(collisionDetection(frog, car)) {
+  lose() {
+    if(collisionDetection(this.frog, this.car0) || collisionDetection(this.frog, this.car1)) {
       this.frog.lose();
       console.log('lose');
     };
