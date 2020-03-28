@@ -16,13 +16,6 @@ export class Game {
   // game.js rysuje wszystkie obiekty - jak ma to zrobić ?
   // wprowadza funkcjonalność
 
-  assign(sprite, object) {
-    sprite.width = object.width;
-    sprite.height = object.height;
-    sprite.x = object.x;
-    sprite.y = object.y;
-  }
-
   draw() {
      this.frog.draw(); // narysuj żabę
      this.car0.draw(); // narysuj samochód
@@ -30,7 +23,6 @@ export class Game {
   }
 
   play() { // game start
-    this.frog.move(); // enable frog key events
     this.car0.move();
     this.car1.move();
   }
