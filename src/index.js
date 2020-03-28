@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
-import frogTexture from './icons/frogger.svg';
+import frogTexturePlay from './icons/frogger.svg';
 import frogTextureDead from './icons/frogger_dead.svg';
+import frogTextureWin from './icons/frogger_win.svg';
 import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
@@ -27,10 +28,12 @@ const app = new PIXI.Application({ view: canvas, width: board.width * board.scal
 app.view.style.border = '2px solid #A1BC00';
 
 // load the texture
-app.loader.add('frogTexture', frogTexture).add('frogTextureDead', frogTextureDead).add('carTexture', carTexture).load((loader, resources) => {
+app.loader.add('frogTexturePlay', frogTexturePlay).add('frogTextureWin', frogTextureWin).add('frogTextureDead', frogTextureDead).add('carTexture', carTexture).load((loader, resources) => {
 
   // create all the sprites
-  const frogSprite = new PIXI.Sprite(resources.frogTexture.texture);
+  const frogSpritePlay = new PIXI.Sprite(resources.frogTexturePlay.texture);
+  const frogSpriteDead = new PIXI.Sprite(resources.frogTextureDead.texture);
+  const frogSpriteWin = new PIXI.Sprite(resources.frogTextureWin.texture);
   const carSprite0 = new PIXI.Sprite(resources.carTexture.texture);
   const carSprite1 = new PIXI.Sprite(resources.carTexture.texture);
 
@@ -41,7 +44,7 @@ app.loader.add('frogTexture', frogTexture).add('frogTextureDead', frogTextureDea
     document.getElementById('button').style.display = "none";
 
     // add sprite to stage
-    app.stage.addChild(frogSprite);
+    app.stage.addChild(frogSpritePlay);
     app.stage.addChild(carSprite0);
     app.stage.addChild(carSprite1);
 
@@ -58,29 +61,38 @@ app.loader.add('frogTexture', frogTexture).add('frogTextureDead', frogTextureDea
   }
 
   function render() { // draws the game so the player can see what happened
-    // assign sprites to objects
     draw(carSprite0, car0);
     draw(carSprite1, car1);
-    draw(frogSprite, frog);
+    draw(frogSpritePlay, frog);
+  }
+
+  function draw(sprite, object) {
+    sprite.width = object.width;
+    sprite.height = object.height;
+    sprite.x = object.x;
+    sprite.y = object.y;
+  }
+
+  function processInput() {
+    game.frog.move();
+  }
+
+  function update() { // advances the game simulation one step, runs AI, then physics
+    game.animate();
+    if(game.win()) {
+      app.stage.removeChild(frogSpritePlay);
+      app.stage.addChild(frogSpriteWin);
+      draw(frogSpriteWin, frog);
+    };
+    if(game.lose()) {
+      app.stage.removeChild(frogSpritePlay);
+      app.stage.addChild(frogSpriteDead);
+      draw(frogSpriteDead, frog);
+    };
   }
 
 });
 
-function draw(sprite, object) {
-  sprite.width = object.width;
-  sprite.height = object.height;
-  sprite.x = object.x;
-  sprite.y = object.y;
-}
 
-function processInput() {
-  game.frog.move();
-}
-
-function update() { // advances the game simulation one step, runs AI, then physics
-  game.animate();
-  game.lose();
-  game.win();
-}
 
 

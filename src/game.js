@@ -30,14 +30,14 @@ export class Game {
   lose() {
     if(collisionDetection(this.frog, this.car0) || collisionDetection(this.frog, this.car1)) {
       this.frog.lose();
-      console.log('lose');
+      return true;
     };
   }
 
   win() {
     if(collisionDetection(this.frog, this.home)) {
       this.frog.win();
-       console.log('win');
+      return true;
     }
   }
 }
