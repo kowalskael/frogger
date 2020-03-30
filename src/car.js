@@ -1,4 +1,4 @@
-import { carArray } from './index';
+import { enemies } from './index';
 
 export class Car {
   constructor(board, x, y, width, height) {
@@ -14,11 +14,15 @@ export class Car {
   draw() {
     this.width = this.board.scale;
     this.height = this.board.scale;
-    this.x = carArray.indexOf(this) * this.board.scale + (carArray.indexOf(this)) * this.board.scale; // położenie żaby na środku w osi x
-    this.y = (this.board.height - 2 - carArray.indexOf(this)) * this.board.scale;
+    for(let row = 0; row < enemies.length; row++) {
+      for (let enemy = 0; enemy < enemies[row].length; enemy++) {
+        this.x = enemies[row].indexOf(this) * this.board.scale + (enemies[row].indexOf(this)) * this.board.scale; // położenie żaby na środku w osi x
+        this.y = (this.board.height - 2 - enemies[row].indexOf(this)) * this.board.scale;
+      }
+    }
   }
 
-  animate() {
+  update() {
     this.x += this.speed; // moving only within x-axis
     if (this.x > (this.board.width * this.board.scale)) {
       this.x = 0;

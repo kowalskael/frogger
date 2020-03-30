@@ -42,7 +42,7 @@ export class Frog {
     }
   };
 
-  move() { // one key down, one square move
+  update() { // one key down, one square move
     if (this.flag) {
       addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
     }
