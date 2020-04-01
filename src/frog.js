@@ -7,6 +7,7 @@ export class Frog extends PIXI.Container {
     this.spriteNormal = spriteNormal;
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
+    this.flag = true;
   }
 
   draw() { // start, after the prev frog is win/lose
@@ -42,4 +43,25 @@ export class Frog extends PIXI.Container {
       default:
     }
   };
+
+  update() { // one key down, one square move
+    if (this.flag) {
+      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    }
+  }
+
+  win() {
+    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
+    this.spriteNormal.visible = false;
+    this.spriteWin.visible = true;
+    console.log('WIN');
+  }
+
+  lose() { // collision, time run out etc.
+    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
+    this.flag = false;
+    this.spriteNormal.visible = false;
+    this.spriteDead.visible = true;
+    console.log('DEAD');
+  }
 }

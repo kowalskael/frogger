@@ -7,7 +7,6 @@ export class Game {
     this.frog = frog;
     this.enemies = enemies;
     this.home = home;
-    this.flag = true;
   }
 
   draw() {
@@ -33,22 +32,15 @@ export class Game {
   }
 
   update() { // one key down, one square move
-    if (this.flag) {
-      addEventListener('keydown', this.frog.keyDown); // przypisanie funkcjonalności klawiszy
-    }
+    this.frog.update();
   }
 
   win() {
-     removeEventListener('keydown', this.frog.keyDown); // usuń możliwość ruszania żabą
-     this.frog.spriteNormal.visible = false;
-     this.frog.spriteWin.visible = true;
+    this.frog.win();
   }
 
   lose() { // collision, time run out etc.
-     removeEventListener('keydown', this.frog.keyDown); // usuń możliwość ruszania żabą
-     this.flag = false;
-     this.frog.spriteNormal.visible = false;
-     this.frog.spriteDead.visible = true;
+    this.frog.lose();
   }
 
 }
