@@ -4,7 +4,6 @@ export class Frog extends PIXI.Container {
   constructor(board, spriteNormal, spriteDead, spriteWin) {
     super();
     this.board = board; // przypisanie od canvasu, w którym dzieje się gra
-    this.flag = true;
     this.spriteNormal = spriteNormal;
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
@@ -16,10 +15,6 @@ export class Frog extends PIXI.Container {
     this.addChild(this.spriteWin);
     this.spriteDead.visible = false;
     this.spriteWin.visible = false;
-    this.width = this.board.scale;
-    this.height = this.board.scale;
-    this.x = (this.board.width / 2) * this.board.scale - this.width / 2;
-    this.y = (this.board.height * this.board.scale) - this.height;
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
@@ -47,23 +42,4 @@ export class Frog extends PIXI.Container {
       default:
     }
   };
-
-  update() { // one key down, one square move
-    if (this.flag) {
-      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
-    }
-  }
-
-  win() {
-    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
-    this.spriteNormal.visible = false;
-    this.spriteWin.visible = true;
-  }
-
-  lose() { // collision, time run out etc.
-    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
-    this.flag = false;
-    this.spriteNormal.visible = false;
-    this.spriteDead.visible = true;
-  }
 }
