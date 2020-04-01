@@ -4,10 +4,6 @@ export class Frog extends PIXI.Container {
   constructor(board, spriteNormal, spriteDead, spriteWin) {
     super();
     this.board = board; // przypisanie od canvasu, w którym dzieje się gra
-    this.width = this.board.scale;
-    this.height = this.board.scale;
-    this.x = (this.board.width / 2) * this.board.scale - this.width / 2;
-    this.y = (this.board.height * this.board.scale) - this.height;
     this.flag = true;
     this.spriteNormal = spriteNormal;
     this.spriteDead = spriteDead;
@@ -20,6 +16,10 @@ export class Frog extends PIXI.Container {
     this.addChild(this.spriteWin);
     this.spriteDead.visible = false;
     this.spriteWin.visible = false;
+    this.width = this.board.scale;
+    this.height = this.board.scale;
+    this.x = (this.board.width / 2) * this.board.scale - this.width / 2;
+    this.y = (this.board.height * this.board.scale) - this.height;
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby

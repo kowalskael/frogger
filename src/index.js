@@ -57,11 +57,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
     // add sprite to stage
     frog.draw();
-    frog.width = board.scale;
-    frog.height = board.scale;
-    frog.x = (board.width / 2) * board.scale - frog.width / 2;
-    frog.y = (board.height * board.scale) - frog.height;
-
     console.log(frog.y);
 
     for(let rows = 0; rows < 3; rows++) {
