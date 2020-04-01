@@ -6,7 +6,6 @@ export class Car {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.car = { x, y };
     this.board = board;
     this.speed = 2;
   }
@@ -14,12 +13,7 @@ export class Car {
   draw() {
     this.width = this.board.scale;
     this.height = this.board.scale;
-    for(let row = 0; row < enemies.length; row++) {
-      for (let enemy = 0; enemy < enemies[row].length; enemy++) {
-        this.x = enemies[row].indexOf(this) * this.board.scale + (enemies[row].indexOf(this)) * this.board.scale; // położenie żaby na środku w osi x
-        this.y = (this.board.height - 2 - enemies[row].indexOf(this)) * this.board.scale;
-      }
-    }
+
   }
 
   update() {
