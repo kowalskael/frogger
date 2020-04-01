@@ -1,41 +1,52 @@
-export class Frog {
-  constructor(board, x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.frog = { x, y }; // położenie i wielkość żaby
-    this.board = board; // przypisanie od canvasu, w którym dzieje się gra
-    this.flag = true;
-  }
+import * as PIXI from "pixi.js";
 
-  draw() { // start, after the prev frog is win/lose
+export class Frog extends PIXI.Container {
+  constructor(board, normalSprite, deadSprite, winSprite) {
+    super();
+    this.board = board; // przypisanie od canvasu, w którym dzieje się gra
     this.width = this.board.scale;
     this.height = this.board.scale;
     this.x = (this.board.width/2) * this.board.scale - this.width/2; // położenie żaby na środku w osi x
     this.y = (this.board.height * this.board.scale) - this.height; // położenie żaby na samym dole pola gry
+    this.flag = true;
+    this.direction = { x: 0, y: 0 };
+    this.normalSprite = normalSprite;
+    this.deadSprite = deadSprite;
+    this.winSprite = winSprite;
+  }
+
+  draw() { // start, after the prev frog is win/lose
+    this.addChild(this.normalSprite);
+    this.addChild(this.deadSprite);
+    this.deadSprite.visible = false;
+    this.addChild(this.winSprite);
+    this.visible = false;
   }
 
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
     switch (e.key) {
       case 'ArrowDown':
         if (this.y < (this.board.height * this.board.scale) - this.height) {
-          this.y += this.height; // move frog down
+          this.direction = { x: 0, y: this.height }
+          this.y += this.direction.y; // move frog down
         }
         break;
       case 'ArrowUp':
         if (this.y > this.height / 2) {
-          this.y -= this.height; // move frog up
+          this.direction = { x: 0, y: -this.height };
+          this.y += this.direction.y; // move frog up
         }
         break;
       case 'ArrowLeft':
         if (this.x > this.width / 2) {
-          this.x -= this.width; // move frog left
+          this.direction = { x: -this.width, y: 0 };
+          this.x += this.direction.x; // move frog left
         }
         break;
       case 'ArrowRight':
         if (this.x < (this.board.width * this.board.scale) - this.width) {
-          this.x += this.width; // move frog right
+          this.direction = { x: this.width, y: 0 };
+          this.x += this.direction.x; // move frog right
         }
         break;
       default:
