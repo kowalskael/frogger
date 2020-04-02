@@ -8,25 +8,42 @@ import { Frog } from './frog';
 import { Car } from './car';
 
 // create objects of the game: board, home, enemies and frog
-const board = { width: 10, height: 4, scale: 30 };
+const board = { width: 12, height: 5, scale: 30 };
 const home = { width: board.scale, height: board.scale, x: (board.width/2) * board.scale - board.scale/2, y: 0};
 
+const isEven = (value) => { return (value%2 === 0) };
+
 export const enemies = []; // array with enemies
-for(let rows = 0; rows < 2; rows++) {
+for(let rows = 0; rows < 3; rows++) {
   enemies[rows] = [];
-  for(let cols = 0; cols < 3; cols++) {
-    enemies[rows][cols] = new Car(board, cols, rows);
-    enemies[rows][cols].draw();
+  if(isEven(rows)) {
+    for(let cols = 0; cols < 2; cols++) {
+      enemies[rows][cols] = new Car(board, cols, rows);
+      enemies[rows][cols].draw();
+    }
+  } else {
+    for(let cols = 0; cols < 1; cols++) {
+      enemies[rows][cols] = new Car(board, cols, rows);
+      enemies[rows][cols].draw();
+    }
   }
 }
 
+
 for(let rows = 0; rows < enemies.length; rows++) {
-  for(let enemy = 0; enemy < enemies[rows].length; enemy++) {
-    enemies[rows][enemy].x = (board.scale * rows) + enemies[rows][enemy].x * board.scale + (enemies[rows][enemy].x * (((board.width * board.scale) - (enemies[rows][enemy].width * enemies[rows].length))/enemies[rows].length));
-    enemies[rows][enemy].y = (enemies[rows][enemy].y + 1) * board.scale;
-    console.log(enemies[rows][enemy])
+  if(isEven(rows)) {
+    for(let enemy = 0; enemy < enemies[rows].length; enemy++) {
+      enemies[rows][enemy].x = enemy * board.width * board.scale / enemies[rows].length;
+      enemies[rows][enemy].y = (enemies[rows][enemy].y + 1) * board.scale;
+    }
+  } else {
+      for(let enemy = 0; enemy < enemies[rows].length; enemy++) {
+        enemies[rows][enemy].x = board.width * board.scale / enemies[rows].length / 4 + enemy * board.width*board.scale/enemies[rows].length;
+        enemies[rows][enemy].y = (enemies[rows][enemy].y + 1) * board.scale;
+      }
   }
 }
+
 
 const enemiesSprite = []; // array for enemies sprites
 
@@ -50,9 +67,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const game = new Game(board, frog, enemies, home);
   app.stage.addChild(game.frog);
 
-  for(let rows = 0; rows < 2; rows++) {
+  for(let rows = 0; rows < enemies.length; rows++) {
     enemiesSprite[rows] = [];
-    for(let cols = 0; cols < 3; cols++) {
+    for(let cols = 0; cols < enemies[rows].length; cols++) {
       enemiesSprite[rows][cols] = new PIXI.Sprite(resources.carTexture.texture);
     }
   }
