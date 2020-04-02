@@ -1,19 +1,19 @@
-import { enemies } from './index';
+import * as PIXI from 'pixi.js';
 
-export class Car {
-  constructor(board, x, y, width, height) {
-    this.x = x;
-    this.y = y;
+export class Car extends PIXI.Container {
+  constructor(board, sprite, width, height) {
+    super();
+    this.board = board;
+    this.sprite = sprite;
     this.width = width;
     this.height = height;
-    this.board = board;
     this.speed = 2;
   }
 
   draw() {
+    this.addChild(this.sprite);
     this.width = this.board.scale;
     this.height = this.board.scale;
-
   }
 
   update() {
