@@ -13,8 +13,7 @@ const home = { width: board.scale, height: board.scale, x: (board.width/2) * boa
 
 const isEven = (value) => { return (value%2 === 0) };
 
-export const enemies = []; // array with enemies
-const enemiesSprite = []; // array for enemies sprites
+const enemies = []; // array with enemies
 
 // create pixi.js application
 const canvas = document.getElementById('canvas');
@@ -41,12 +40,10 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     if(isEven(rows)) {
       for(let cols = 0; cols < 2; cols++) {
         enemies[rows][cols] = new Car(board, enemySprite);
-        enemies[rows][cols].draw();
       }
     } else {
       for(let cols = 0; cols < 1; cols++) {
         enemies[rows][cols] = new Car(board, enemySprite);
-        enemies[rows][cols].draw();
       }
     }
   }
@@ -57,6 +54,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   for(let row = 0; row < game.enemies.length; row++) {
     for(let enemy = 0; enemy < game.enemies[row].length; enemy++) {
       app.stage.addChild(game.enemies[row][enemy]);
+      console.log(game.enemies[row][enemy].width)
     }
   }
 
@@ -68,10 +66,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     document.getElementById('button').style.display = "none";
 
     game.draw();
-
-    console.log(enemies);
-    console.log(frog);
-    console.log(game);
 
     gameLoop();
   }

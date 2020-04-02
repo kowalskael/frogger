@@ -5,15 +5,11 @@ export class Car extends PIXI.Container {
     super();
     this.board = board;
     this.sprite = sprite;
-    this.width = width;
-    this.height = height;
     this.speed = 2;
   }
 
   draw() {
     this.addChild(this.sprite);
-    this.width = this.board.scale;
-    this.height = this.board.scale;
   }
 
   update() {
