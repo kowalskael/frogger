@@ -5,15 +5,14 @@ import frogTextureWin from './icons/frogger_win.svg';
 import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
-import { Car } from './car';
+import { Enemy } from './enemy';
+import { Enemies } from './enemies';
 
 // create objects of the game: board, home, enemies and frog
 const board = { width: 12, height: 5, scale: 30 };
 const home = { width: board.scale, height: board.scale, x: (board.width/2) * board.scale - board.scale/2, y: 0};
 
 const isEven = (value) => { return (value%2 === 0) };
-
-const enemies = []; // array with enemies
 
 // create pixi.js application
 const canvas = document.getElementById('canvas');
@@ -34,27 +33,15 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const frog = new Frog(board, frogSpriteNormal, frogSpriteDead, frogSpriteWin);
 
   const enemySprite = new PIXI.Sprite(resources.carTexture.texture);
+  const enemy = new Enemy(board, enemySprite);
+  const enemies = new Enemies(board, enemySprite, 3, 2, enemy); // array with enemies
 
-  for(let rows = 0; rows < 3; rows++) {
-    enemies[rows] = [];
-    if(isEven(rows)) {
-      for(let cols = 0; cols < 2; cols++) {
-        enemies[rows][cols] = new Car(board, enemySprite);
-      }
-    } else {
-      for(let cols = 0; cols < 1; cols++) {
-        enemies[rows][cols] = new Car(board, enemySprite);
-      }
-    }
-  }
 
   const game = new Game(board, frog, enemies, home);
   app.stage.addChild(game.frog);
-
-  for(let row = 0; row < game.enemies.length; row++) {
-    for(let enemy = 0; enemy < game.enemies[row].length; enemy++) {
-      app.stage.addChild(game.enemies[row][enemy]);
-      console.log(game.enemies[row][enemy].width)
+  for(let row = 0; row < enemies.enemies.length; row++) {
+    for (let enemy = 0; enemy < enemies.enemies[row].length; enemy++) {
+      app.stage.addChild(enemies.enemies[row][enemy]);
     }
   }
 
@@ -66,6 +53,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     document.getElementById('button').style.display = "none";
 
     game.draw();
+    enemies.draw();
+    console.log(enemies);
 
     gameLoop();
   }
@@ -79,9 +68,13 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   function update() { // advances the game simulation one step, runs AI, then physics
     game.update();
+    for(let row = 0; row < enemies.enemies.length; row++) {
+      for (let enemy = 0; enemy < enemies.enemies[row].length; enemy++) {
+        enemies.enemies[row][enemy].update();
+      }
+    }
     game.checkCollisions();
   }
 
-  // check collision frog vs all enemies
 
 });

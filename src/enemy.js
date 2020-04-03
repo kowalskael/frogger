@@ -1,7 +1,10 @@
-import * as PIXI from 'pixi.js';
+import * as PIXI from "pixi.js";
 
-export class Car extends PIXI.Container {
-  constructor(board, sprite, width, height) {
+// różne opcje np. wygląd, każda przeszkoda może mieć inny sprite
+// podpięcie pod tablice, by wyliczyć prędkość
+
+export class Enemy extends PIXI.Container{
+  constructor(board, sprite) {
     super();
     this.board = board;
     this.sprite = sprite;

@@ -1,4 +1,3 @@
-import { Frog } from './frog';
 import { distance, range, collisionDetection } from './math';
 
 export class Game {
@@ -15,18 +14,6 @@ export class Game {
     this.frog.height = this.board.scale;
     this.frog.x = (this.board.width / 2) * this.board.scale - this.frog.width / 2;
     this.frog.y = (this.board.height * this.board.scale) - this.frog.height;
-
-    for(let rows = 0; rows < this.enemies.length; rows++) {
-      for(let enemy = 0; enemy < this.enemies[rows].length; enemy++) {
-          this.enemies[rows][enemy].draw();
-          this.enemies[rows][enemy].width = this.board.scale;
-          this.enemies[rows][enemy].height = this.board.scale;
-          this.enemies[rows][enemy].x = enemy * this.board.width * this.board.scale / this.enemies[rows].length;
-          this.enemies[rows][enemy].y = (this.enemies[rows][enemy].y + 1) * this.board.scale;
-          console.log(this.enemies[rows][enemy].width)
-       }
-    }
-
   }
 
   checkCollisions() {
@@ -45,11 +32,6 @@ export class Game {
 
   update() { // one key down, one square move
     this.frog.update();
-    for(let rows = 0; rows < this.enemies.length; rows++) {
-      for(let enemy = 0; enemy < this.enemies[rows].length; enemy++) {
-        this.enemies[rows][enemy].update();
-      }
-    }
   }
 
   win() {
