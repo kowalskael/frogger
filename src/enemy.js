@@ -4,15 +4,23 @@ import * as PIXI from "pixi.js";
 // podpięcie pod tablice, by wyliczyć prędkość
 
 export class Enemy extends PIXI.Container{
-  constructor(board, sprite) {
+  constructor(board, sprite, width, height, x, y) {
     super();
     this.board = board;
     this.sprite = sprite;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
     this.speed = 2;
   }
 
   draw() {
     this.addChild(this.sprite);
+    this.width = this.board.scale;
+    this.height = this.board.scale;
+    this.x = (this.board.width / 2) * this.board.scale - this.width / 2;
+    this.y = (this.board.scale);
   }
 
   update() {
