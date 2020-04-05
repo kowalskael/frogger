@@ -1,8 +1,8 @@
 import { distance, range, collisionDetection } from './math';
 
 export class Game {
-  constructor(board, frog, enemies, home) {
-    this.board = board;
+  constructor(scene, frog, enemies, home) {
+    this.scene = scene;
     this.frog = frog;
     this.enemies = enemies;
     this.home = home;
@@ -10,10 +10,10 @@ export class Game {
 
   draw() {
     this.frog.draw();
-    this.frog.width = this.board.scale;
-    this.frog.height = this.board.scale;
-    this.frog.x = (this.board.width / 2) * this.board.scale - this.frog.width / 2;
-    this.frog.y = (this.board.height * this.board.scale) - this.frog.height;
+    this.frog.width = this.scene.scale;
+    this.frog.height = this.scene.scale;
+    this.frog.x = (this.scene.width / 2) * this.scene.scale - this.frog.width / 2;
+    this.frog.y = (this.scene.height * this.scene.scale) - this.frog.height;
   }
 
   checkCollisions() {

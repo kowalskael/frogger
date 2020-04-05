@@ -3,22 +3,18 @@ import * as PIXI from "pixi.js";
 // różne opcje np. wygląd, każda przeszkoda może mieć inny sprite
 // podpięcie pod tablice, by wyliczyć prędkość
 
-export class Enemy extends PIXI.Container{
-  constructor(board, sprite, width, height, x, y) {
+export class Enemy extends PIXI.Container {
+  constructor(scene, sprite) {
     super();
-    this.board = board;
+    this.scene = scene;
     this.sprite = sprite;
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
     this.speed = 2;
   }
 
   draw() {
+    this.width = this.scene.scale;
+    this.height = this.scene.scale;
     this.addChild(this.sprite);
-    this.width = this.board.scale;
-    this.height = this.board.scale;
   }
 
   update() {
