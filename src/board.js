@@ -1,10 +1,3 @@
-// array creating enemies
-// different rows and cols
-// każdy element tabicy może mieć inny sprite wewnątrz
-// mogą być np. 3, używane na przemiennie
-// różne prędkości w poszczególnym cols
-//
-
 export class Board {
   constructor(scene, enemy) {
     this.scene = scene;
@@ -18,7 +11,7 @@ export class Board {
       for(let row = 0; row < Math.ceil(Math.random() * rows); row++) {
         enemies[row] = [];
         for(let col = 0; col < Math.ceil(Math.random() * cols); col++) {
-          enemies[row][col] = { fill: 'enemy'};
+          enemies[row][col] = this.enemy;
         }
       }
       return enemies;
@@ -36,7 +29,16 @@ export class Board {
   }
 
   draw() {
-
+    for(let rows = 0; rows < this.board.length; rows++) {
+      for(let cols = 0; cols < this.board[rows].length; cols++) {
+        for(let enemy = 0; enemy < this.board[rows][cols].length; enemy++) {
+          this.board[rows][cols][enemy].draw();
+          this.board[rows][cols][enemy].x = this.scene.width * this.scene.scale / this.board[rows][cols].length / 4 + enemy * this.scene.width* this.scene.scale/this.board[rows][cols].length;
+          this.board[rows][cols][enemy].y = (rows + 1) * this.scene.scale;
+          console.log(this.board[rows][cols][enemy].x,  this.board[rows][cols][enemy].y);
+        }
+      }
+    }
   }
 
   update() {

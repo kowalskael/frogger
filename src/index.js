@@ -12,8 +12,6 @@ import { Board } from './board';
 const scene = { width: 12, height: 10, scale: 30 };
 const home = { width: scene.scale, height: scene.scale, x: (scene.width/2) * scene.scale - scene.scale/2, y: 0};
 
-const isEven = (value) => { return (value%2 === 0) };
-
 // create pixi.js application
 const canvas = document.getElementById('canvas');
 const app = new PIXI.Application({ view: canvas, width: scene.width * scene.scale, height: scene.height * scene.scale, backgroundColor: 0x000000 });
@@ -36,7 +34,13 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const enemy = new Enemy(scene, enemySprite);
   const board = new Board(scene, enemy); // array with enemies
 
-  console.log(board);
+  for(let rows = 0; rows < board.board.length; rows++) {
+    for(let cols = 0; cols < board.board[rows].length; cols++) {
+      for(let enemy = 0; enemy < board.board[rows][cols].length; enemy++) {
+        app.stage.addChild(board.board[rows][cols][enemy]);
+      }
+    }
+  }
 
   const game = new Game(scene, frog, board, home);
   app.stage.addChild(game.frog);
@@ -48,6 +52,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     document.getElementById('button').style.display = "none";
 
     game.draw();
+    board.draw();
+    
+    console.log(board);
 
     gameLoop();
   }

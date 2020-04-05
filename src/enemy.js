@@ -19,8 +19,6 @@ export class Enemy extends PIXI.Container{
     this.addChild(this.sprite);
     this.width = this.board.scale;
     this.height = this.board.scale;
-    this.x = (this.board.width / 2) * this.board.scale - this.width / 2;
-    this.y = (this.board.scale);
   }
 
   update() {
