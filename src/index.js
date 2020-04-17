@@ -6,6 +6,7 @@ import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
 import { Enemy } from './enemy';
+import { Board } from "./board";
 
 // create objects of the game: scene, home, enemies and frog
 const scene = { width: 12, height: 10, scale: 30 };
@@ -28,7 +29,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const frogSpriteWin = new PIXI.Sprite(resources.frogTextureWin.texture);
 
   const frog = new Frog(scene, frogSpriteNormal, frogSpriteDead, frogSpriteWin);
-  const enemySprite = new PIXI.Sprite(resources.carTexture.texture);
 
   const board = [];
   const isEven = (value) => { return (value%2 === 0) };
@@ -41,20 +41,17 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       for(let row = 0; row < Math.ceil(Math.random() * 3); row++) {
         enemies[row] = [];
         for(let col = 0; col < Math.ceil(Math.random() * 3); col++) {
-          enemies[row][col] = new Enemy(scene, enemySprite);
+          enemies[row][col] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
         }
       }
       board[rows] = enemies;
     }
   }
 
-  console.log(board);
-
   for(let rows = 0; rows < board.length; rows++) {
     for(let cols = 0; cols < board[rows].length; cols++) {
       for(let enemy = 0; enemy < board[rows][cols].length; enemy++) {
         app.stage.addChild(board[rows][cols][enemy]);
-        console.log(board[rows][cols][enemy].sprite)
       }
     }
   }
@@ -83,8 +80,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       }
     }
 
-
-    console.log(app.stage.children[0].width);
     console.log(app.stage.children);
 
     gameLoop();
@@ -99,6 +94,15 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   function update() { // advances the game simulation one step, runs AI, then physics
     game.update();
+
+    for(let rows = 0; rows < board.length; rows++) {
+      for(let cols = 0; cols < board[rows].length; cols++) {
+        for(let enemy = 0; enemy < board[rows][cols].length; enemy++) {
+          board[rows][cols][enemy].update();
+        }
+      }
+    }
+
     game.checkCollisions();
   }
 

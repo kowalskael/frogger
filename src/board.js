@@ -1,9 +1,10 @@
 import { Enemy } from './enemy';
 
 export class Board {
-  constructor(scene, enemy) {
+  constructor(scene, enemy, sprite) {
     this.scene = scene;
     this.enemy = enemy;
+    this.sprite = sprite;
 
     const board = [];
     const isEven = (value) => { return (value%2 === 0) };
@@ -13,8 +14,7 @@ export class Board {
       for(let row = 0; row < Math.ceil(Math.random() * rows); row++) {
         enemies[row] = [];
         for(let col = 0; col < Math.ceil(Math.random() * cols); col++) {
-          enemies[row][col] = { fill : 'enemy' };
-          //console.log(this.enemy);
+          enemies[row][col] = this.enemy(this.scene, this.sprite);
         }
       }
       return enemies;

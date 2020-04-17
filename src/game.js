@@ -14,13 +14,16 @@ export class Game {
     this.frog.height = this.scene.scale;
     this.frog.x = (this.scene.width / 2) * this.scene.scale - this.frog.width / 2;
     this.frog.y = (this.scene.height * this.scene.scale) - this.frog.height;
+    console.log(this.enemies);
   }
 
   checkCollisions() {
-      for(let row = 0; row < this.enemies.length; row++) {
-        for (let enemy = 0; enemy < this.enemies[row].length; enemy++) {
-          if(collisionDetection(this.frog, this.enemies[row][enemy])) {
-            this.lose();
+      for(let rows = 0; rows < this.enemies.length; rows++) {
+          for(let cols = 0; cols < this.enemies[rows].length; cols++) {
+            for(let enemy = 0; enemy < this.enemies[rows][cols].length; enemy++) {
+              if(collisionDetection(this.frog, this.enemies[rows][cols][enemy])) {
+               this.lose();
+            }
           }
         }
       }

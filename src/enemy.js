@@ -19,7 +19,7 @@ export class Enemy extends PIXI.Container {
 
   update() {
     this.x += this.speed; // moving only within x-axis
-    if (this.x > (this.board.width * this.board.scale)) {
+    if (this.x > (this.scene.width * this.scene.scale)) {
       this.x = 0;
     }
   }
