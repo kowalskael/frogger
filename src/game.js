@@ -14,7 +14,6 @@ export class Game {
     this.frog.height = this.scene.scale;
     this.frog.x = (this.scene.width / 2) * this.scene.scale - this.frog.width / 2;
     this.frog.y = (this.scene.height * this.scene.scale) - this.frog.height;
-    console.log(this.enemies);
   }
 
   checkCollisions() {

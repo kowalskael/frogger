@@ -6,7 +6,6 @@ import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
 import { Enemy } from './enemy';
-import { Board } from "./board";
 
 // create objects of the game: scene, home, enemies and frog
 const scene = { width: 12, height: 10, scale: 30 };
@@ -30,29 +29,41 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   const frog = new Frog(scene, frogSpriteNormal, frogSpriteDead, frogSpriteWin);
 
-  const board = [];
+  const createBoard = [];
   const isEven = (value) => { return (value%2 === 0) };
 
   for(let rows = 0; rows < 5; rows++) {
-    board[rows] = [];
-    if(isEven(rows)) {
-    } else {
-      const enemies = [];
-      for(let row = 0; row < Math.ceil(Math.random() * 3); row++) {
-        enemies[row] = [];
-        for(let col = 0; col < Math.ceil(Math.random() * 3); col++) {
-          enemies[row][col] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+    createBoard[rows] = [];
+    if(rows !== 0 || rows !== 5) {
+      if(isEven(rows)) {
+        const empty = [];
+        for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
+          empty[row] = [];
         }
+        createBoard[rows] = empty;
+      } else {
+        const enemies = [];
+        for(let row = 0; row < Math.ceil(Math.random() * 3); row++) {
+          enemies[row] = [];
+          for(let col = 0; col < Math.ceil(Math.random() * 3); col++) {
+            enemies[row][col] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+          }
+        }
+        createBoard[rows] = enemies;
       }
-      board[rows] = enemies;
     }
+
   }
+
+  const board = createBoard.reduce(function(prev, curr) {
+    return prev.concat(curr);
+  });
+
+  console.log(board);
 
   for(let rows = 0; rows < board.length; rows++) {
     for(let cols = 0; cols < board[rows].length; cols++) {
-      for(let enemy = 0; enemy < board[rows][cols].length; enemy++) {
-        app.stage.addChild(board[rows][cols][enemy]);
-      }
+        app.stage.addChild(board[rows][cols]);
     }
   }
 
@@ -69,18 +80,17 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
     for(let rows = 0; rows < board.length; rows++) {
       for(let cols = 0; cols < board[rows].length; cols++) {
-        for(let enemy = 0; enemy < board[rows][cols].length; enemy++) {
-          board[rows][cols][enemy].draw();
-          board[rows][cols][enemy].width = scene.scale;
-          board[rows][cols][enemy].height = scene.scale;
-          board[rows][cols][enemy].x = scene.width * scene.scale / board[rows][cols].length / 4 + enemy * scene.width*scene.scale/board[rows][cols].length;;
-          board[rows][cols][enemy].y = (rows + 1) * scene.scale;
-          console.log(board[rows][cols][enemy].x,  board[rows][cols][enemy].y);
-        }
+          board[rows][cols].draw();
+          board[rows][cols].width = scene.scale;
+          board[rows][cols].height = scene.scale;
+          board[rows][cols].x = cols * scene.scale;
+          board[rows][cols].y = Math.abs((rows - board.length)) * scene.scale;
+          console.log(board[rows][cols].x,  board[rows][cols].y);
       }
     }
 
     console.log(app.stage.children);
+    console.log(board);
 
     gameLoop();
   }
@@ -97,9 +107,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
     for(let rows = 0; rows < board.length; rows++) {
       for(let cols = 0; cols < board[rows].length; cols++) {
-        for(let enemy = 0; enemy < board[rows][cols].length; enemy++) {
-          board[rows][cols][enemy].update();
-        }
+          board[rows][cols].update();
       }
     }
 
