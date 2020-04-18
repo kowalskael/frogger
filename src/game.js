@@ -19,10 +19,8 @@ export class Game {
   checkCollisions() {
       for(let rows = 0; rows < this.enemies.length; rows++) {
           for(let cols = 0; cols < this.enemies[rows].length; cols++) {
-            for(let enemy = 0; enemy < this.enemies[rows][cols].length; enemy++) {
-              if(collisionDetection(this.frog, this.enemies[rows][cols][enemy])) {
+              if(collisionDetection(this.frog, this.enemies[rows][cols])) {
                this.lose();
-            }
           }
         }
       }
