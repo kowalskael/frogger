@@ -35,7 +35,6 @@ for(let rows = 0; rows < 5; rows++) {
       }
       createBoard[rows] = enemies;
     }
-    console.log(createBoard)
 }
 
 const board = createBoard.reduce(function(prev, curr) {
@@ -46,6 +45,8 @@ const board = createBoard.reduce(function(prev, curr) {
 // create objects of the game: scene, home, enemies and frog
 const scene = { width: 12, height: board.length, scale: 30 };
 const home = { width: scene.scale, height: scene.scale, x: (scene.width/2) * scene.scale - scene.scale/2, y: 0};
+
+
 
 // create pixi.js application
 const canvas = document.getElementById('canvas');
@@ -106,22 +107,21 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       }
     }
 
-    console.log(app.stage.children);
-    console.log(board);
-
-    for(let rows = 0; rows < board.length; rows++) {
-      for(let cols = 0; cols < board[rows].length; cols++) {
-        console.log(board[rows][cols].x, board[rows][cols].y);
-      }
-    }
-
     gameLoop();
+
   }
+
+  let lastLoop = performance.now();
+  let fps = 0;
 
   function gameLoop() {
     // listen for frame updates
     app.ticker.add(() => {
       update();
+      let thisLoop = performance.now();
+      fps = 1000 / (thisLoop - lastLoop);
+      lastLoop = thisLoop;
+      console.log(Math.floor(fps));
     });
   }
 
