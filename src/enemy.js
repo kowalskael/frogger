@@ -8,7 +8,6 @@ export class Enemy extends PIXI.Container {
     super();
     this.scene = scene;
     this.sprite = sprite;
-    this.speed = 2;
   }
 
   draw() {
@@ -17,8 +16,8 @@ export class Enemy extends PIXI.Container {
     this.addChild(this.sprite);
   }
 
-  update() {
-    this.x += this.speed; // moving only within x-axis
+  update(delta) {
+    this.x += 2 * delta; // moving only within x-axis
     if (this.x > (this.scene.width * this.scene.scale)) {
       this.x = 0;
     }
