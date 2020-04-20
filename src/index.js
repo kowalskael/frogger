@@ -108,29 +108,19 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   }
 
-  let lag = 0;
-  let msPerUpdate = 0.16;
-
   function gameLoop() {
     // listen for frame updates
     app.ticker.add((delta) => {
-      lag += delta;
-      if (lag >= msPerUpdate) {
-        update();
-        lag -= msPerUpdate;
-      }
-
-      //console.log(delta);
-      console.log(lag);
+      update(delta);
     });
   }
 
-  function update() { // advances the game simulation one step, runs AI, then physics
+  function update(delta) { // advances the game simulation one step, runs AI, then physics
     game.update();
 
     for(let rows = 0; rows < board.length; rows++) {
       for(let cols = 0; cols < board[rows].length; cols++) {
-          board[rows][cols].update();
+          board[rows][cols].update(delta);
       }
     }
 
