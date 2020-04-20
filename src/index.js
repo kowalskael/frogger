@@ -27,9 +27,9 @@ for(let rows = 0; rows < 5; rows++) {
       createBoard[rows] = empty;
     } else {
       const enemies = [];
-      for(let row = 0; row < Math.ceil(Math.random() * 3); row++) {
+      for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
         enemies[row] = [];
-        for(let col = 0; col < Math.ceil(Math.random() * 3); col++) {
+        for(let col = 0; col < Math.ceil(Math.random() * 2); col++) {
           enemies[row][col] = { fill: 'enemy' };
         }
       }
@@ -41,12 +41,9 @@ const board = createBoard.reduce(function(prev, curr) {
   return prev.concat(curr);
 });
 
-
 // create objects of the game: scene, home, enemies and frog
 const scene = { width: 12, height: board.length, scale: 30 };
-const home = { width: scene.scale, height: scene.scale, x: (scene.width/2) * scene.scale - scene.scale/2, y: 0};
-
-
+const home = { width: scene.width * scene.scale, height: scene.scale, x: (scene.width * scene.scale)/2, y: 0};
 
 // create pixi.js application
 const canvas = document.getElementById('canvas');
@@ -96,12 +93,12 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
           board[rows][cols].draw();
           board[rows][cols].width = scene.scale;
           board[rows][cols].height = scene.scale;
-          let rouler = ((scene.scale * scene.width) / board[rows].length);
+          let measure = ((scene.scale * scene.width) / board[rows].length);
         if(isEven(rows)) {
-          board[rows][cols].x = (cols ) * rouler + 40;
+          board[rows][cols].x = (cols ) * measure + 40;
           board[rows][cols].y = Math.abs((rows + 1 - board.length)) * scene.scale;
         } else {
-          board[rows][cols].x = cols * rouler;
+          board[rows][cols].x = cols * measure;
           board[rows][cols].y = Math.abs((rows + 1 - board.length)) * scene.scale;
         }
       }
@@ -111,20 +108,29 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   }
 
+  let lag = 0;
+  let msPerUpdate = 0.16;
+
   function gameLoop() {
     // listen for frame updates
     app.ticker.add((delta) => {
-      update(delta);
-      console.log(delta);
+      lag += delta;
+      if (lag >= msPerUpdate) {
+        update();
+        lag -= msPerUpdate;
+      }
+
+      //console.log(delta);
+      console.log(lag);
     });
   }
 
-  function update(delta) { // advances the game simulation one step, runs AI, then physics
+  function update() { // advances the game simulation one step, runs AI, then physics
     game.update();
 
     for(let rows = 0; rows < board.length; rows++) {
       for(let cols = 0; cols < board[rows].length; cols++) {
-          board[rows][cols].update(delta);
+          board[rows][cols].update();
       }
     }
 
