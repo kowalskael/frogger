@@ -1,8 +1,5 @@
 import * as PIXI from "pixi.js";
 
-// różne opcje np. wygląd, każda przeszkoda może mieć inny sprite
-// podpięcie pod tablice, by wyliczyć prędkość
-
 export class Enemy extends PIXI.Container {
   constructor(scene, sprite) {
     super();
@@ -11,15 +8,21 @@ export class Enemy extends PIXI.Container {
   }
 
   draw() {
-    this.width = this.scene.scale;
-    this.height = this.scene.scale;
     this.addChild(this.sprite);
   }
 
   update(delta) {
-    this.x += 2 * delta; // moving only within x-axis
-    if (this.x > (this.scene.width * this.scene.scale)) {
-      this.x = 0;
+    if (this.dir === 'right') {
+      this.x += this.speed * delta; // moving only within x-axis
+      if (this.x > (this.scene.width * this.scene.scale)) {
+        this.x = 0;
+      }
+    }
+    if (this.dir === 'left') {
+      this.x -= this.speed * delta; // moving only within x-axis
+      if (this.x < 0) {
+        this.x = this.scene.width * this.scene.scale;
+      }
     }
   }
 }

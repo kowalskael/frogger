@@ -2,47 +2,16 @@ import * as PIXI from 'pixi.js';
 import frogTexturePlay from './icons/frogger.svg';
 import frogTextureDead from './icons/frogger_dead.svg';
 import frogTextureWin from './icons/frogger_win.svg';
+import roadTexture from './icons/road.svg';
+
 import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
 import { Enemy } from './enemy';
-
-const createBoard = [];
-const isEven = (value) => { return (value%2 === 0) };
-
-for(let rows = 0; rows < 5; rows++) {
-  createBoard[rows] = [];
-
-    if(isEven(rows)) {
-      const empty = [];
-      if(rows !== 4) {
-        for (let row = 0; row < Math.ceil(Math.random() * 2); row++) {
-          empty[row] = [];
-        }
-      } else {
-        for (let row = 0; row < 1; row++) {
-          empty[row] = [];
-        }
-      }
-      createBoard[rows] = empty;
-    } else {
-      const enemies = [];
-      for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
-        enemies[row] = [];
-        for(let col = 0; col < Math.ceil(Math.random() * 2); col++) {
-          enemies[row][col] = { fill: 'enemy' };
-        }
-      }
-      createBoard[rows] = enemies;
-    }
-}
-
-const board = createBoard.reduce(function(prev, curr) {
-  return prev.concat(curr);
-});
+import { Row } from './row';
 
 // create objects of the game: scene, home, enemies and frog
-const scene = { width: 12, height: board.length, scale: 30 };
+const scene = { width: 12, height: 15, scale: 30 };
 const home = { width: scene.width * scene.scale, height: scene.scale, x: (scene.width * scene.scale)/2, y: 0};
 
 // create pixi.js application
@@ -54,6 +23,7 @@ app.view.style.border = '2px solid #A1BC00';
 app.loader.add('frogTexturePlay', frogTexturePlay)
   .add('frogTextureWin', frogTextureWin)
   .add('frogTextureDead', frogTextureDead)
+  .add('roadTexture', roadTexture)
   .add('carTexture', carTexture).load((loader, resources) => {
 
   // create all the sprites
@@ -63,17 +33,46 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   const frog = new Frog(scene, frogSpriteNormal, frogSpriteDead, frogSpriteWin);
 
-  for(let rows = 0; rows < board.length; rows++) {
-    for(let cols = 0; cols < board[rows].length; cols++) {
-      if(board[rows][cols].fill === 'enemy') {
-        board[rows][cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+  const createBoard = [];
+  const isEven = (value) => { return (value % 2 === 0) };
+
+  for(let rows = 0; rows < 5; rows++) {
+    createBoard[rows] = [];
+
+    if(isEven(rows)) {
+      const empty = [];
+      if(rows !== 4) {
+        for (let row = 0; row < Math.ceil(Math.random() * 2); row++) {
+          empty[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'empty',2, 'right', Math.random() * 3);
+        }
+      } else {
+        for (let row = 0; row < 1; row++) {
+          empty[row] = [];
+        }
       }
+      createBoard[rows] = empty;
+    } else {
+      const enemies = [];
+      for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
+        enemies[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'empty',2, 'right', Math.random() * 3);
+      }
+      createBoard[rows] = enemies;
     }
   }
 
-  for(let rows = 0; rows < board.length; rows++) {
-    for(let cols = 0; cols < board[rows].length; cols++) {
-        app.stage.addChild(board[rows][cols]);
+  const board = createBoard.reduce(function(prev, curr) {
+    return prev.concat(curr);
+  });
+
+  console.log(board);
+
+  const row = new Row(scene,new PIXI.Sprite(resources.roadTexture.texture), 'cars',2, 'right', Math.random() * 3);
+  app.stage.addChild(row);
+  console.log(row);
+
+  if(row.type === 'cars') {
+    for(let rows = 0; rows < row.spriteArray.length; rows++) {
+      row.spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
     }
   }
 
@@ -87,21 +86,15 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     document.getElementById('button').style.display = "none";
 
     game.draw();
+    row.draw();
 
-    for(let rows = 0; rows < board.length; rows++) {
-      for(let cols = 0; cols < board[rows].length; cols++) {
-          board[rows][cols].draw();
-          board[rows][cols].width = scene.scale;
-          board[rows][cols].height = scene.scale;
-          let measure = ((scene.scale * scene.width) / board[rows].length);
-        if(isEven(rows)) {
-          board[rows][cols].x = (cols ) * measure + 40;
-          board[rows][cols].y = Math.abs((rows + 1 - board.length)) * scene.scale;
-        } else {
-          board[rows][cols].x = cols * measure;
-          board[rows][cols].y = Math.abs((rows + 1 - board.length)) * scene.scale;
-        }
-      }
+    for(let rows = 0; rows < row.spriteArray.length; rows++) {
+      row.spriteArray[rows].draw();
+      let measure = ((scene.scale * scene.width) / row.spriteArray.length);
+      row.spriteArray[rows].x = (rows) * measure + 40;
+      row.spriteArray[rows].y = 0;
+      row.spriteArray[rows].width = 30;
+      row.spriteArray[rows].height = 30;
     }
 
     gameLoop();
@@ -117,12 +110,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   function update(delta) { // advances the game simulation one step, runs AI, then physics
     game.update();
-
-    for(let rows = 0; rows < board.length; rows++) {
-      for(let cols = 0; cols < board[rows].length; cols++) {
-          board[rows][cols].update(delta);
-      }
-    }
+    row.update(delta);
 
     game.checkCollisions();
   }
