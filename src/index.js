@@ -36,27 +36,30 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   const createBoard = [];
   const isEven = (value) => { return (value % 2 === 0) };
-  // liczba całkowita wszystkich rows ma się równać wysokości sceny
-  // załóżmy że empy moża być 8 a enemy 7
 
-  for(let rows = 0; rows < 5; rows++) {
+  let elementsNumber = [ 1, 0, 0, 0, 0, 0, 0, 1 ];
+
+  do {
+    elementsNumber[1] = Math.ceil(Math.random() * 3);
+    elementsNumber[2] = Math.ceil(Math.random() * 3);
+    elementsNumber[3] = Math.ceil(Math.random() * 3);
+    elementsNumber[4] = Math.ceil(Math.random() * 3);
+    elementsNumber[5] = Math.ceil(Math.random() * 3);
+    elementsNumber[6] = Math.ceil(Math.random() * 3);
+  } while (elementsNumber[0] + elementsNumber[1] + elementsNumber[2] + elementsNumber[3] + elementsNumber[4] + elementsNumber[5] !== (scene.height-1));
+
+  for(let rows = 0; rows < 7; rows++) {
     createBoard[rows] = [];
 
-    if(isEven(rows)) {
+    if (isEven(rows)) {
       const empty = [];
-      if(rows !== 4) {
-        for (let row = 0; row < Math.ceil(Math.random() * 2); row++) {
-          empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass',2, 'right', 0);
-        }
-      } else {
-        for (let row = 0; row < 1; row++) {
-          empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass',2, 'right', 0);
-        }
+      for (let row = 0; row < elementsNumber[rows]; row++) {
+        empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass', 2, 'right', 0);
       }
       createBoard[rows] = empty;
     } else {
       const enemies = [];
-      for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
+      for(let row = 0; row < elementsNumber[rows]; row++) {
         enemies[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'cars',2, 'right', Math.random() * 3);
       }
       createBoard[rows] = enemies;
@@ -104,10 +107,11 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
         let measure = (scene.scale * scene.width) / board[row].spriteArray.length;
         if(isEven(row)) {
           board[row].spriteArray[rows].x = rows * measure;
+          board[row].spriteArray[rows].y = row * scene.scale;
         } else {
           board[row].spriteArray[rows].x = (rows) * measure + 50;
+          board[row].spriteArray[rows].y = row * scene.scale;
         }
-
         board[row].spriteArray[rows].width = scene.scale;
         board[row].spriteArray[rows].height = scene.scale;
       }
