@@ -4,18 +4,7 @@
 	 viewBox="0 0 360 30" height="30" width="360" xml:space="preserve">
 <style type="text/css">
 	.st0{display:none;}
-	.st1{fill:#1E1E1E;}
-	.st2{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
-	.st3{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:15.4478,20.597;}
+	.st1{fill:#000;}
 </style>
-<g id="Warstwa_1_1_" class="st0">
-</g>
-<rect class="st1" width="360" height="30"/>
-<g>
-	<g>
-		<line class="st2" x1="0" y1="15" x2="7.5" y2="15"/>
-		<line class="st3" x1="28.1" y1="15" x2="342.2" y2="15"/>
-		<line class="st2" x1="352.5" y1="15" x2="360" y2="15"/>
-	</g>
-</g>
+<rect y="0" class="st1" width="360" height="30"/>
 </svg>

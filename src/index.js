@@ -3,7 +3,7 @@ import frogTexturePlay from './icons/frogger.svg';
 import frogTextureDead from './icons/frogger_dead.svg';
 import frogTextureWin from './icons/frogger_win.svg';
 import roadTexture from './icons/road.svg';
-
+import grassTexture from './icons/grass.svg';
 import carTexture from './icons/car.svg';
 import { Game } from './game';
 import { Frog } from './frog';
@@ -16,14 +16,15 @@ const home = { width: scene.width * scene.scale, height: scene.scale, x: (scene.
 
 // create pixi.js application
 const canvas = document.getElementById('canvas');
-const app = new PIXI.Application({ view: canvas, width: scene.width * scene.scale, height: scene.height * scene.scale, backgroundColor: 0x000000 });
-app.view.style.border = '2px solid #A1BC00';
+const app = new PIXI.Application({ view: canvas, width: scene.width * scene.scale, height: scene.height * scene.scale, backgroundColor: 0x000 });
+app.view.style.border = '2px solid #000';
 
 // load the texture
 app.loader.add('frogTexturePlay', frogTexturePlay)
   .add('frogTextureWin', frogTextureWin)
   .add('frogTextureDead', frogTextureDead)
   .add('roadTexture', roadTexture)
+  .add('grassTexture', grassTexture)
   .add('carTexture', carTexture).load((loader, resources) => {
 
   // create all the sprites
@@ -35,6 +36,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   const createBoard = [];
   const isEven = (value) => { return (value % 2 === 0) };
+  // liczba całkowita wszystkich rows ma się równać wysokości sceny
+  // załóżmy że empy moża być 8 a enemy 7
 
   for(let rows = 0; rows < 5; rows++) {
     createBoard[rows] = [];
@@ -43,18 +46,18 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       const empty = [];
       if(rows !== 4) {
         for (let row = 0; row < Math.ceil(Math.random() * 2); row++) {
-          empty[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'empty',2, 'right', Math.random() * 3);
+          empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass',2, 'right', 0);
         }
       } else {
         for (let row = 0; row < 1; row++) {
-          empty[row] = [];
+          empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass',2, 'right', 0);
         }
       }
       createBoard[rows] = empty;
     } else {
       const enemies = [];
       for(let row = 0; row < Math.ceil(Math.random() * 2); row++) {
-        enemies[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'empty',2, 'right', Math.random() * 3);
+        enemies[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'cars',2, 'right', Math.random() * 3);
       }
       createBoard[rows] = enemies;
     }
@@ -64,15 +67,19 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     return prev.concat(curr);
   });
 
-  console.log(board);
+  for(let row = 0; row < board.length; row++) {
+    app.stage.addChild(board[row]);
 
-  const row = new Row(scene,new PIXI.Sprite(resources.roadTexture.texture), 'cars',2, 'right', Math.random() * 3);
-  app.stage.addChild(row);
-  console.log(row);
+    if(board[row].type === 'cars') {
+      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
+        board[row].spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+      }
+    }
 
-  if(row.type === 'cars') {
-    for(let rows = 0; rows < row.spriteArray.length; rows++) {
-      row.spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+    if(board[row].type === 'grass') {
+      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
+        board[row].spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+      }
     }
   }
 
@@ -86,15 +93,24 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     document.getElementById('button').style.display = "none";
 
     game.draw();
-    row.draw();
 
-    for(let rows = 0; rows < row.spriteArray.length; rows++) {
-      row.spriteArray[rows].draw();
-      let measure = ((scene.scale * scene.width) / row.spriteArray.length);
-      row.spriteArray[rows].x = (rows) * measure + 40;
-      row.spriteArray[rows].y = 0;
-      row.spriteArray[rows].width = 30;
-      row.spriteArray[rows].height = 30;
+    for(let row = 0; row < board.length; row++) {
+      board[row].draw();
+      board[row].y = row * scene.scale;
+      board[row].width = scene.scale * scene.width;
+      board[row].height = scene.scale;
+      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
+        board[row].spriteArray[rows].draw();
+        let measure = (scene.scale * scene.width) / board[row].spriteArray.length;
+        if(isEven(row)) {
+          board[row].spriteArray[rows].x = rows * measure;
+        } else {
+          board[row].spriteArray[rows].x = (rows) * measure + 50;
+        }
+
+        board[row].spriteArray[rows].width = scene.scale;
+        board[row].spriteArray[rows].height = scene.scale;
+      }
     }
 
     gameLoop();
@@ -110,7 +126,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   function update(delta) { // advances the game simulation one step, runs AI, then physics
     game.update();
-    row.update(delta);
+    for(let row = 0; row < board.length; row++) {
+      board[row].update(delta);
+    }
 
     game.checkCollisions();
   }
