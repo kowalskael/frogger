@@ -69,19 +69,17 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     return prev.concat(curr);
   });
 
-  for(let row = 0; row < board.length; row++) {
-    app.stage.addChild(board[row]);
+  for(let rows = 0; rows < board.length; rows++) {
+    app.stage.addChild(board[rows]);
 
-    if(board[row].type === 'cars') {
-      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
-        board[row].spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+    for(let cols = 0; cols < board[rows].spriteArray.length; cols++) {
+    if(board[rows].type === 'cars') {
+        board[rows].spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
       }
-    }
-
-    if(board[row].type === 'grass') {
-      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
-        board[row].spriteArray[rows] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+      if(board[rows].type === 'grass') {
+        board[rows].spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
       }
+      app.stage.addChild(board[rows].spriteArray[cols]);
     }
   }
 
@@ -96,25 +94,24 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
     game.draw();
 
-    for(let row = 0; row < board.length; row++) {
-      board[row].draw();
-      board[row].y = row * scene.scale;
-      board[row].width = scene.scale * scene.width;
-      board[row].height = scene.scale;
-      for(let cols = 0; cols < board[row].spriteArray.length; cols++) {
-        board[row].spriteArray[cols].draw();
-        let measure = (scene.scale * scene.width) / board[row].spriteArray.length;
-        if(isEven(row)) {
-          board[row].spriteArray[cols].x = cols * measure;
-          board[row].spriteArray[cols].y = row * scene.scale;
+    for(let rows = 0; rows < board.length; rows++) {
+      board[rows].draw();
+      board[rows].y = rows * scene.scale;
+      board[rows].width = scene.scale * scene.width;
+      board[rows].height = scene.scale;
+      for(let cols = 0; cols < board[rows].spriteArray.length; cols++) {
+        board[rows].spriteArray[cols].draw();
+        let measure = (scene.scale * scene.width) / board[rows].spriteArray.length;
+        if(isEven(rows)) {
+          board[rows].spriteArray[cols].x = cols * measure;
+          board[rows].spriteArray[cols].y = rows * scene.scale;
 
         } else {
-          board[row].spriteArray[cols].x = cols * measure + 50;
-          board[row].spriteArray[cols].y = row * scene.scale;
+          board[rows].spriteArray[cols].x = cols * measure + 50;
+          board[rows].spriteArray[cols].y = rows * scene.scale;
         }
-        board[row].spriteArray[cols].width = scene.scale;
-        board[row].spriteArray[cols].height = scene.scale;
-        console.log(board[row].spriteArray[cols])
+        board[rows].spriteArray[cols].width = scene.scale;
+        board[rows].spriteArray[cols].height = scene.scale;
       }
     }
 
