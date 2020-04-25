@@ -37,18 +37,17 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const createBoard = [];
   const isEven = (value) => { return (value % 2 === 0) };
 
-  let elementsNumber = [ 1, 0, 0, 0, 0, 0, 0, 1 ];
+  let elementsNumber = [];
 
   do {
-    elementsNumber[1] = Math.ceil(Math.random() * 3);
-    elementsNumber[2] = Math.ceil(Math.random() * 3);
-    elementsNumber[3] = Math.ceil(Math.random() * 3);
-    elementsNumber[4] = Math.ceil(Math.random() * 3);
-    elementsNumber[5] = Math.ceil(Math.random() * 3);
-    elementsNumber[6] = Math.ceil(Math.random() * 3);
-  } while (elementsNumber[0] + elementsNumber[1] + elementsNumber[2] + elementsNumber[3] + elementsNumber[4] + elementsNumber[5] !== (scene.height-1));
+    for(let rows = 1; rows < 6; rows++) {
+      elementsNumber[rows] = Math.ceil(Math.random() * 3);
+    }
+    elementsNumber[0] = 1;
+    elementsNumber[6] = 1;
+  } while (elementsNumber.reduce((a, b) => a + b) !== (scene.height));
 
-  for(let rows = 0; rows < 7; rows++) {
+  for(let rows = 0; rows < elementsNumber.length; rows++) {
     createBoard[rows] = [];
 
     if (isEven(rows)) {
@@ -102,18 +101,20 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       board[row].y = row * scene.scale;
       board[row].width = scene.scale * scene.width;
       board[row].height = scene.scale;
-      for(let rows = 0; rows < board[row].spriteArray.length; rows++) {
-        board[row].spriteArray[rows].draw();
+      for(let cols = 0; cols < board[row].spriteArray.length; cols++) {
+        board[row].spriteArray[cols].draw();
         let measure = (scene.scale * scene.width) / board[row].spriteArray.length;
         if(isEven(row)) {
-          board[row].spriteArray[rows].x = rows * measure;
-          board[row].spriteArray[rows].y = row * scene.scale;
+          board[row].spriteArray[cols].x = cols * measure;
+          board[row].spriteArray[cols].y = row * scene.scale;
+
         } else {
-          board[row].spriteArray[rows].x = (rows) * measure + 50;
-          board[row].spriteArray[rows].y = row * scene.scale;
+          board[row].spriteArray[cols].x = cols * measure + 50;
+          board[row].spriteArray[cols].y = row * scene.scale;
         }
-        board[row].spriteArray[rows].width = scene.scale;
-        board[row].spriteArray[rows].height = scene.scale;
+        board[row].spriteArray[cols].width = scene.scale;
+        board[row].spriteArray[cols].height = scene.scale;
+        console.log(board[row].spriteArray[cols])
       }
     }
 
