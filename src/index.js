@@ -74,9 +74,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   // main board object, after reduction
   const board =  boardStructure.reduce((prev, curr) => prev.concat(curr));
-
   for(let rows = 0; rows < board.length; rows++) {
     const row = board[rows];
+    app.stage.addChild(row);
     for(let cols = 0; cols < row.spriteArray.length; cols++) {
       if(row.type === 'cars') {
         row.spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
@@ -86,7 +86,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
       }
       app.stage.addChild(row.spriteArray[cols]);
     }
-    app.stage.addChild(row);
   }
 
   // game object (collision detection, functionality)
