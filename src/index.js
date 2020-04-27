@@ -99,21 +99,20 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     // display all the elements
     game.init();
     // initialize gameLoop function
-    gameLoop();
+    start();
   }
 
   // game loop
-  function gameLoop() {
+  function start() {
     // listen for frame updates
     app.ticker.add((delta) => {
-      update(delta);
+      gameLoop(delta);
     });
   }
 
   // game update, advances the game simulation one step, runs AI, then physics
-  function update(delta) {
+  function gameLoop(delta) {
     game.update(delta);
     game.checkCollisions();
   }
-
 });

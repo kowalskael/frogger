@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import { isEven } from './math';
 
 export class Row extends PIXI.Container {
-  constructor(scene, backgroundSprite, sprite, amount) {
+  constructor(scene, backgroundSprite, sprite,amount) {
     super();
     this.scene = scene;
     this.backgroundSprite = backgroundSprite;
@@ -21,8 +21,9 @@ export class Row extends PIXI.Container {
     for(let cols = 0; cols < this.spriteArray.length; cols++) {
       this.spriteArray[cols].init();
       let measure = (this.scene.scale * this.scene.width) / this.spriteArray.length;
-        this.spriteArray[cols].x = cols * measure;
-        this.spriteArray[cols].y = this;
+      this.spriteArray[cols].x = cols * measure;
+      this.spriteArray[cols].y = this.y;
+      console.log(this.spriteArray[cols].y)
     }
   }
 
