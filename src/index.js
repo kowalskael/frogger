@@ -9,12 +9,13 @@ import { Game } from './game';
 import { Frog } from './frog';
 import { Enemy } from './enemy';
 import { Row } from './row';
+import { isEven } from './math';
+import { calculateRowsNumbers } from "./boardStructure";
 
-// create objects of the game: scene, home, enemies and frog
+// create scene object, to pass dimentions
 const scene = { width: 12, height: 15, scale: 30 };
-const home = { width: scene.width * scene.scale, height: scene.scale, x: (scene.width * scene.scale)/2, y: 0};
 
-// create pixi.js application
+// define canvas, create pixi.js application
 const canvas = document.getElementById('canvas');
 const app = new PIXI.Application({ view: canvas, width: scene.width * scene.scale, height: scene.height * scene.scale, backgroundColor: 0x000 });
 app.view.style.border = '2px solid #000';
@@ -27,47 +28,52 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   .add('grassTexture', grassTexture)
   .add('carTexture', carTexture).load((loader, resources) => {
 
-  // create all the sprites
+  // create all the frog sprites
   const frogSpriteNormal = new PIXI.Sprite(resources.frogTexturePlay.texture);
   const frogSpriteDead = new PIXI.Sprite(resources.frogTextureDead.texture);
   const frogSpriteWin = new PIXI.Sprite(resources.frogTextureWin.texture);
 
+  // create objects for the game: frog, board, home, game
+
+  // frog object
   const frog = new Frog(scene, frogSpriteNormal, frogSpriteDead, frogSpriteWin);
+  // home object
+  const home = { width: scene.width * scene.scale, height: scene.scale, x: (scene.width * scene.scale)/2, y: 0};
 
-  const createBoard = [];
-  const isEven = (value) => { return (value % 2 === 0) };
+  // create array with repose and enemies rows numbers
+  let rowsNumber = [];
+  calculateRowsNumbers(rowsNumber, 6, scene.height);
 
-  let elementsNumber = [];
+  // boardStructure object
+  const boardStructure = [];
 
-  do {
-    for(let rows = 1; rows < 6; rows++) {
-      elementsNumber[rows] = Math.ceil(Math.random() * 3);
-    }
-    elementsNumber[0] = 1;
-    elementsNumber[6] = 1;
-  } while (elementsNumber.reduce((a, b) => a + b) !== (scene.height));
+  function initRepose(rowsNumber, rows, array) {
+      for (let row = 0; row < rowsNumber[rows]; row++) {
+        array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass', 2, 'right', 0);
+      }
+  }
 
-  for(let rows = 0; rows < elementsNumber.length; rows++) {
-    createBoard[rows] = [];
+  function initEnemies(rowsNumber, rows, array) {
+      for (let row = 0; row < rowsNumber[rows]; row++) {
+        array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'cars', 2, 'right', Math.random() * 3);
+      }
+  }
 
+  for(let rows = 0; rows < rowsNumber.length; rows++) {
+    boardStructure[rows] = [];
     if (isEven(rows)) {
-      const empty = [];
-      for (let row = 0; row < elementsNumber[rows]; row++) {
-        empty[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass', 2, 'right', 0);
-      }
-      createBoard[rows] = empty;
+      const reposeRows = [];
+      initRepose(rowsNumber, rows, reposeRows);
+      boardStructure[rows] = reposeRows;
     } else {
-      const enemies = [];
-      for(let row = 0; row < elementsNumber[rows]; row++) {
-        enemies[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'cars',2, 'right', Math.random() * 3);
-      }
-      createBoard[rows] = enemies;
+      const enemiesRows = [];
+      initEnemies(rowsNumber, rows, enemiesRows);
+      boardStructure[rows] = enemiesRows;
     }
   }
 
-  const board = createBoard.reduce(function(prev, curr) {
-    return prev.concat(curr);
-  });
+  // main board object, after reduction
+  const board =  boardStructure.reduce((prev, curr) => prev.concat(curr));
 
   for(let rows = 0; rows < board.length; rows++) {
     app.stage.addChild(board[rows]);
@@ -83,15 +89,25 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     }
   }
 
+  // game object (collision detection, functionality)
   const game = new Game(scene, frog, board, home);
   app.stage.addChild(game.frog);
 
+  // create button object
   const button = document.getElementById('button');
+  // add event to button
   button.addEventListener('click', clickHandler);
 
   function clickHandler() {
+    // hide button after click
     document.getElementById('button').style.display = "none";
+    initGame();
+  }
 
+  // game initialization
+  function initGame() {
+
+    // display all the elements
     game.draw();
 
     for(let rows = 0; rows < board.length; rows++) {
@@ -114,11 +130,11 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
         board[rows].spriteArray[cols].height = scene.scale;
       }
     }
-
+    // initialize gameLoop function
     gameLoop();
-
   }
 
+  // game loop
   function gameLoop() {
     // listen for frame updates
     app.ticker.add((delta) => {
@@ -126,6 +142,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     });
   }
 
+  // game update
   function update(delta) { // advances the game simulation one step, runs AI, then physics
     game.update();
     for(let row = 0; row < board.length; row++) {
