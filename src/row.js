@@ -16,13 +16,11 @@ export class Row extends PIXI.Container {
       spriteArray[cols] = { x: this.x, y: this.y, width: this.scene.scale, height: this.scene.scale };
     }
     this.spriteArray = spriteArray;
+    this.addChild(this.backgroundSprite);
   }
 
   draw() {
-    this.addChild(this.backgroundSprite);
-    for(let cols= 0; cols < this.spriteArray.length; cols++) {
-      this.addChild(this.spriteArray[cols]);
-    }
+
   }
 
   update(delta) {

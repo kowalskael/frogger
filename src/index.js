@@ -76,17 +76,17 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const board =  boardStructure.reduce((prev, curr) => prev.concat(curr));
 
   for(let rows = 0; rows < board.length; rows++) {
-    app.stage.addChild(board[rows]);
-
-    for(let cols = 0; cols < board[rows].spriteArray.length; cols++) {
-    if(board[rows].type === 'cars') {
-        board[rows].spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+    const row = board[rows];
+    for(let cols = 0; cols < row.spriteArray.length; cols++) {
+      if(row.type === 'cars') {
+        row.spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
       }
-      if(board[rows].type === 'grass') {
-        board[rows].spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
+      if(row.type === 'grass') {
+        row.spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
       }
-      app.stage.addChild(board[rows].spriteArray[cols]);
+      app.stage.addChild(row.spriteArray[cols]);
     }
+    app.stage.addChild(row);
   }
 
   // game object (collision detection, functionality)
@@ -106,30 +106,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   // game initialization
   function initGame() {
-
     // display all the elements
     game.draw();
-
-    for(let rows = 0; rows < board.length; rows++) {
-      board[rows].draw();
-      board[rows].y = rows * scene.scale;
-      board[rows].width = scene.scale * scene.width;
-      board[rows].height = scene.scale;
-      for(let cols = 0; cols < board[rows].spriteArray.length; cols++) {
-        board[rows].spriteArray[cols].draw();
-        let measure = (scene.scale * scene.width) / board[rows].spriteArray.length;
-        if(isEven(rows)) {
-          board[rows].spriteArray[cols].x = cols * measure;
-          board[rows].spriteArray[cols].y = rows * scene.scale;
-
-        } else {
-          board[rows].spriteArray[cols].x = cols * measure + 50;
-          board[rows].spriteArray[cols].y = rows * scene.scale;
-        }
-        board[rows].spriteArray[cols].width = scene.scale;
-        board[rows].spriteArray[cols].height = scene.scale;
-      }
-    }
     // initialize gameLoop function
     gameLoop();
   }
