@@ -1,14 +1,20 @@
 import * as PIXI from "pixi.js";
 
 export class Enemy extends PIXI.Container {
-  constructor(scene, sprite) {
+  constructor(scene, sprite, dir, speed, width, height) {
     super();
     this.scene = scene;
     this.sprite = sprite;
+    this.width = width;
+    this.height = height;
+    this.dir = dir;
+    this.speed = speed;
   }
 
-  draw() {
+  init() {
     this.addChild(this.sprite);
+    this.width = this.scene.scale;
+    this.height = this.scene.scale;
   }
 
   update(delta) {

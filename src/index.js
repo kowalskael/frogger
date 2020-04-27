@@ -49,13 +49,13 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   function initRepose(rowsNumber, rows, array) {
       for (let row = 0; row < rowsNumber[rows]; row++) {
-        array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), 'grass', 2, 'right', 0);
+        array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture), 'right', 2), 0);
       }
   }
 
   function initEnemies(rowsNumber, rows, array) {
       for (let row = 0; row < rowsNumber[rows]; row++) {
-        array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), 'cars', 2, 'right', Math.random() * 3);
+        array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture), 'right', 2),Math.random() * 3);
       }
   }
 
@@ -77,15 +77,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   for(let rows = 0; rows < board.length; rows++) {
     const row = board[rows];
     app.stage.addChild(row);
-    for(let cols = 0; cols < row.spriteArray.length; cols++) {
-      if(row.type === 'cars') {
-        row.spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
-      }
-      if(row.type === 'grass') {
-        row.spriteArray[cols] = new Enemy(scene, new PIXI.Sprite(resources.carTexture.texture));
-      }
-      app.stage.addChild(row.spriteArray[cols]);
-    }
   }
 
   // game object (collision detection, functionality)
@@ -106,7 +97,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   // game initialization
   function initGame() {
     // display all the elements
-    game.draw();
+    game.init();
     // initialize gameLoop function
     gameLoop();
   }
@@ -119,13 +110,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     });
   }
 
-  // game update
-  function update(delta) { // advances the game simulation one step, runs AI, then physics
-    game.update();
-    for(let row = 0; row < board.length; row++) {
-      board[row].update(delta);
-    }
-
+  // game update, advances the game simulation one step, runs AI, then physics
+  function update(delta) {
+    game.update(delta);
     game.checkCollisions();
   }
 

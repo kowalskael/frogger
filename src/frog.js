@@ -10,7 +10,7 @@ export class Frog extends PIXI.Container {
     this.flag = true;
   }
 
-  draw() { // start, after the prev frog is win/lose
+  init() { // start, after the prev frog is win/lose
     this.addChild(this.spriteNormal);
     this.addChild(this.spriteDead);
     this.addChild(this.spriteWin);
