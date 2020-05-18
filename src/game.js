@@ -19,8 +19,7 @@ export class Game {
       const row = this.enemies[rows];
       row.init();
       row.y = rows * this.scene.scale;
-      row.width = this.scene.scale * this.scene.width;
-      row.height = this.scene.scale;
+      row.x = 0;
     }
   }
 
