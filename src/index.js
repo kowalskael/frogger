@@ -51,7 +51,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   // repose/enemies textures
   const road = new PIXI.Sprite(resources.roadTexture.texture);
   const grass = new PIXI.Sprite(resources.grassTexture.texture);
-  const car = resources.carTexture.texture;
+  const car =  loader.resources.carTexture.texture;
 
   // create array with repose and enemies rows numbers
   const rowsNumber = [];
@@ -68,26 +68,24 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     ];
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
-    [{bg: grass, texture: car, speed: 0, amount: 3},
+    [{bg: grass, texture: car, speed: 0, amount: 1},
       {bg: grass, texture: car, speed: 0, amount: 3},
-      {bg: grass, texture: car, speed: 0, amount: 3},
+      {bg: grass, texture: car, speed: 0, amount: 2},
       {bg: grass, texture: car, speed: 0, amount: 3},
     ];
 
   // function to create rows with enemies
   function initRepose(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
-      const rowNumber = Math.floor(Math.random() * 4);
-      // tworzyć tablicę ze spritami
-      // spritów musi być tyle ile chcesz ich wyświetlać, ale mogą korzystać ze wspólnych tekstur
-      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawRepose[rowNumber].amount, new PIXI.Sprite(resources.carTexture.texture), drawRepose[rowNumber].speed);
+      const drawNumb = Math.floor(Math.random() * 4);
+      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawRepose[drawNumb].amount, drawRepose[drawNumb].texture, drawRepose[drawNumb].speed);
     }
   }
 
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
-      const rowNumber = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[rowNumber].amount, drawEnemies[rowNumber].car, drawEnemies[rowNumber].speed);
+      const drawNumb = Math.floor(Math.random() * 4);
+      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[drawNumb].amount, drawEnemies[drawNumb].texture, drawEnemies[drawNumb].speed);
     }
   }
 
