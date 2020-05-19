@@ -1,14 +1,21 @@
 import * as PIXI from "pixi.js";
 
 export class Enemy extends PIXI.Container {
-  constructor(scene, row, texture, speed) {
+  constructor(scene, row) {
     super();
     this.scene = scene;
     this.row = row;
     this.width = this.scene.scale;
     this.height = this.scene.scale;
+  }
+
+  setTexture(texture) {
     this.texture = texture;
+    return this;
+  }
+  setSpeed(speed) {
     this.speed = speed;
+    return this;
   }
 
   init() { // adds enemy texture to scene
