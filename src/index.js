@@ -68,10 +68,10 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     ];
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
-    [{bg: grass, texture: car, speed: 0, amount: 1},
-      {bg: grass, texture: car, speed: 0, amount: 3},
-      {bg: grass, texture: car, speed: 0, amount: 2},
-      {bg: grass, texture: car, speed: 0, amount: 3},
+    [{bg: grass, texture: car, speed: 0, amount: 0},
+      {bg: grass, texture: car, speed: 0, amount: 0},
+      {bg: grass, texture: car, speed: 0, amount: 0},
+      {bg: grass, texture: car, speed: 0, amount: 0}
     ];
 
   // function to create rows with enemies
@@ -107,9 +107,6 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   for (let rows = 0; rows < board.length; rows++) {
     const row = board[rows];
     app.stage.addChild(row);
-    for (let cols = 0; cols < board[rows].spriteArray.length; cols++ ){
-      app.stage.addChild(board[rows].spriteArray[cols]);
-    }
   }
 
   // game object (collision detection, functionality)
