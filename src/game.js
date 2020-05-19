@@ -40,7 +40,7 @@ export class Game {
     this.frog.update();
      for(let rows = 0; rows < this.enemies.length; rows++) {
           const row = this.enemies[rows];
-          row.update(delta);
+          //row.update(delta);
      }
   }
 

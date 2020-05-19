@@ -22,12 +22,12 @@ export class Row extends PIXI.Container {
 
   init() {
     this.addChild(this.bg);
-
     for (let cols = 0; cols < this.spriteArray.length; cols++) {
       this.spriteArray[cols].init();
       let measure = (this.scene.scale * this.scene.width) / this.spriteArray.length;
       this.spriteArray[cols].x = cols * measure;
-      this.spriteArray[cols].y = this.y;
+      this.spriteArray[cols].y = 0;
+      console.log(this.spriteArray[cols].x)
     }
   }
 

@@ -12,6 +12,7 @@ export class Enemy extends PIXI.Container {
 
   init() { // adds enemy texture to scene
     this.addChild(this.texture);
+    //console.log(this.texture)
   }
 
   update(delta) { // update x position of enemy

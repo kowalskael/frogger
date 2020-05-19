@@ -13,7 +13,6 @@ import {calculateRowsNumbers} from "./boardStructure";
 import {Calculator} from "./calculator.js";
 
 const calc = Calculator.value(10).mul(1).add(2).div(3.3).sub(3);
-console.log(calc.value);
 
 // create scene object, to pass dimentions
 const scene = {width: 12, height: 15, scale: 30};
@@ -77,17 +76,14 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   // function to create rows with enemies
   function initRepose(rowsNumber, rows, array) {
-    for (let row = 0; row < rowsNumber[rows]; row++) { // draw enemies rows from array, Math.random
-      const rowNumber = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, drawEnemies[rowNumber].bg, drawEnemies[rowNumber].amount, drawEnemies[rowNumber].texture, drawEnemies[rowNumber].speed);
+    for (let row = 0; row < rowsNumber[rows]; row++) {
+      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[0].amount, new PIXI.Sprite(resources.carTexture.texture), drawEnemies[0].speed);
     }
   }
 
-  // to create rows with repose
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
-      const rowNumber = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, drawRepose[rowNumber].bg, drawRepose[rowNumber].amount, drawRepose[rowNumber].texture, drawRepose[rowNumber].speed);
+      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawEnemies[0].amount, new PIXI.Sprite(resources.carTexture.texture), drawEnemies[0].speed);
     }
   }
 
@@ -109,6 +105,9 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   for (let rows = 0; rows < board.length; rows++) {
     const row = board[rows];
     app.stage.addChild(row);
+    for (let cols = 0; cols < board[rows].spriteArray.length; cols++ ){
+      app.stage.addChild(board[rows].spriteArray[cols]);
+    }
   }
 
   // game object (collision detection, functionality)
@@ -124,9 +123,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     // hide button after click
     document.getElementById('button').style.display = "none";
     initGame();
-    for (let rows = 0; rows < board.length; rows++) {
-      console.log(board[rows])
-    }
+    console.log(app.stage)
   }
 
   // game initialization
