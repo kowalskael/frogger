@@ -14,8 +14,10 @@ export class Row extends PIXI.Container {
 
     const spriteArray = []; // for each row create spriteArray
     for (let cols = 0; cols < this.amount; cols++) {
-      spriteArray[cols] = new Enemy(this.scene, this.texture, this.speed); // assign as much new Enemy as stated in index.js
+      spriteArray[cols] = new Enemy(this.scene, this.texture[cols], this.speed); // assign as much new Enemy as stated in index.js
+      console.log(this.texture[cols])
     }
+
 
     this.spriteArray = spriteArray;
   }

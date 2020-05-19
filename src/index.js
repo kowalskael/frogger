@@ -78,14 +78,22 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   function initRepose(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const rowNumber = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawEnemies[rowNumber].amount, new PIXI.Sprite(resources.carTexture.texture), drawEnemies[rowNumber].speed);
+      // tworzyć tablicę ze spritami
+      // spritów musi być tyle ile chcesz ich wyświetlać, ale mogą korzystać ze wspólnych tekstur
+      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawRepose[rowNumber].amount, new PIXI.Sprite(resources.carTexture.texture), drawRepose[rowNumber].speed);
     }
   }
 
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const rowNumber = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[rowNumber].amount, new PIXI.Sprite(resources.carTexture.texture), drawEnemies[rowNumber].speed);
+      const spriteNumber = drawEnemies[rowNumber].amount;
+      const spriteArray = [];
+      for (let enemies = 0; enemies < spriteNumber; enemies++) {
+        spriteArray[enemies] = new PIXI.Sprite(resources.carTexture.texture);
+      }
+      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[rowNumber].amount, spriteArray[row], drawEnemies[rowNumber].speed);
+      console.log(spriteArray.length)
     }
   }
 
