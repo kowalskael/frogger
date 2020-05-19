@@ -12,9 +12,9 @@ export class Row extends PIXI.Container {
     this.width = this.scene.scale * this.scene.width;
     this.height = this.scene.scale;
 
-    const spriteArray = [];
+    const spriteArray = []; // for each row create spriteArray
     for (let cols = 0; cols < this.amount; cols++) {
-      spriteArray[cols] = new Enemy(this.scene, this.texture, this.speed);
+      spriteArray[cols] = new Enemy(this.scene, this.texture, this.speed); // assign as much new Enemy as stated in index.js
     }
 
     this.spriteArray = spriteArray;
@@ -24,10 +24,8 @@ export class Row extends PIXI.Container {
     this.addChild(this.bg);
     for (let cols = 0; cols < this.spriteArray.length; cols++) {
       this.spriteArray[cols].init();
-      let measure = (this.scene.scale * this.scene.width) / this.spriteArray.length;
+      let measure = this.width / this.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
       this.spriteArray[cols].x = cols * measure;
-      this.spriteArray[cols].y = 0;
-      console.log(this.spriteArray[cols].x)
     }
   }
 
