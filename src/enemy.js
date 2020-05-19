@@ -1,9 +1,10 @@
 import * as PIXI from "pixi.js";
 
 export class Enemy extends PIXI.Container {
-  constructor(scene, texture, speed) {
+  constructor(scene, row, texture, speed) {
     super();
     this.scene = scene;
+    this.row = row;
     this.width = this.scene.scale;
     this.height = this.scene.scale;
     this.texture = texture;
@@ -15,9 +16,12 @@ export class Enemy extends PIXI.Container {
   }
 
   update(delta) { // update x position of enemy
-    this.x = this.speed * delta; // moving only within x-axis
-    if (this.x > (this.scene.width * this.scene.scale)) { //
+    this.x += this.speed * delta; // moving only within x-axis
+    if (this.speed > 0 && this.x > (this.scene.scale * this.scene.width)) { //
       this.x = 0;
+    }
+    if (this.speed < 0 && this.x < 0) { //
+      this.x = this.scene.scale * this.scene.width;
     }
   }
 }
