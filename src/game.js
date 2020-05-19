@@ -20,6 +20,7 @@ export class Game {
       row.init();
       row.y = rows * this.scene.scale;
       row.x = 0;
+      console.log(row.y)
     }
   }
 

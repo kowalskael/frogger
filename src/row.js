@@ -26,6 +26,7 @@ export class Row extends PIXI.Container {
       this.spriteArray[cols].init();
       let measure = this.width / this.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
       this.spriteArray[cols].x = cols * measure;
+      this.spriteArray[cols].y = this.y;
     }
   }
 

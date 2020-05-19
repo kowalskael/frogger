@@ -49,8 +49,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const home = {width: scene.width * scene.scale, height: scene.scale, x: (scene.width * scene.scale) / 2, y: 0};
 
   // repose/enemies textures
-  const road = new PIXI.Sprite(resources.roadTexture.texture);
-  const grass = new PIXI.Sprite(resources.grassTexture.texture);
+  const road = loader.resources.roadTexture.texture;
+  const grass = loader.resources.grassTexture.texture;
   const car =  loader.resources.carTexture.texture;
 
   // create array with repose and enemies rows numbers
@@ -78,14 +78,14 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   function initRepose(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const drawNumb = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(resources.grassTexture.texture), drawRepose[drawNumb].amount, drawRepose[drawNumb].texture, drawRepose[drawNumb].speed);
+      array[row] = new Row(scene, new PIXI.Sprite(drawRepose[drawNumb].bg), drawRepose[drawNumb].amount, drawRepose[drawNumb].texture, drawRepose[drawNumb].speed);
     }
   }
 
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const drawNumb = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(resources.roadTexture.texture), drawEnemies[drawNumb].amount, drawEnemies[drawNumb].texture, drawEnemies[drawNumb].speed);
+      array[row] = new Row(scene, new PIXI.Sprite(drawEnemies[drawNumb].bg), drawEnemies[drawNumb].amount, drawEnemies[drawNumb].texture, drawEnemies[drawNumb].speed);
     }
   }
 
