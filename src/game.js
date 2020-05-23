@@ -10,7 +10,7 @@ export class Game {
 
   init() {
     this.frog.init();
-    this.frog.width = this.scene.scale;
+    this.frog.width = this.scene.scale * 0.75;
     this.frog.height = this.scene.scale;
     this.frog.x = (this.scene.width / 2) * this.scene.scale - this.frog.width / 2;
     this.frog.y = (this.scene.height * this.scene.scale) - this.frog.height;
