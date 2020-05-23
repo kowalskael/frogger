@@ -57,6 +57,14 @@ export class Frog extends PIXI.Container {
     console.log('WIN');
   }
 
+  floating() {
+    // this.x === this.repose.x
+  }
+
+  block() {
+    // blokowanie 
+  }
+
   lose() { // collision, time run out etc.
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
     this.flag = false;
