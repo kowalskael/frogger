@@ -13,6 +13,7 @@ export class Enemy extends PIXI.Container {
     this.texture = texture;
     return this;
   }
+
   setSpeed(speed) {
     this.speed = speed;
     return this;

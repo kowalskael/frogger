@@ -26,9 +26,12 @@ export class Game {
   checkCollisions() {
     for(let rows = 0; rows < this.enemies.length; rows++) {
       for(let cols = 0; cols < this.enemies[rows].spriteArray.length; cols++) {
-        if(collisionDetection(this.frog, this.enemies[rows].spriteArray[cols], this.enemies[rows])) {
-          this.lose();
-        }
+      if(this.enemies[rows].type === 'enemy') {
+      if(collisionDetection(this.frog, this.enemies[rows].spriteArray[cols], this.enemies[rows])) {
+                this.lose();
+            }
+      }
+
       }
     }
     if(collisionDetection(this.frog, this.home, this.home)) {

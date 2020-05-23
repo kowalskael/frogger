@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import frogTexturePlay from './icons/me.svg';
-import frogTextureDead from './icons/me.svg';
+import frogTextureDead from './icons/me_dead.svg';
 import frogTextureWin from './icons/me.svg';
 import roadTexture from './icons/road.png';
 import grassTexture01 from './icons/forest_01.png';
@@ -33,10 +33,10 @@ const app = new PIXI.Application({
   view: canvas,
   width: scene.width * scene.scale,
   height: scene.height * scene.scale,
-  backgroundColor: 0x000
+  backgroundColor: 0x1f1f1f
 });
 
-app.view.style.border = '2px solid #000';
+app.view.style.border = '1px solid #fff';
 
 // load the texture
 app.loader.add('frogTexturePlay', frogTexturePlay)
@@ -45,7 +45,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   .add('roadTexture', roadTexture)
   .add('grassTexture01', grassTexture01)
   .add('grassTexture02', grassTexture02)
-  .add('waterTexture',  waterTexture)
+  .add('waterTexture', waterTexture)
   .add('stoneTexture01', stoneTexture01)
   .add('stoneTexture02', stoneTexture02)
   .add('stoneTexture03', stoneTexture03)
@@ -73,10 +73,10 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const grass01 = loader.resources.grassTexture01.texture;
   const grass02 = loader.resources.grassTexture02.texture;
   const water = loader.resources.waterTexture.texture;
-  const car01 =  loader.resources.carTexture01.texture;
-  const car02 =  loader.resources.carTexture02.texture;
-  const car03 =  loader.resources.carTexture03.texture;
-  const truck =  loader.resources.truckTexture.texture;
+  const car01 = loader.resources.carTexture01.texture;
+  const car02 = loader.resources.carTexture02.texture;
+  const car03 = loader.resources.carTexture03.texture;
+  const truck = loader.resources.truckTexture.texture;
   const stone01 = loader.resources.stoneTexture01.texture;
   const stone02 = loader.resources.stoneTexture02.texture;
   const stone03 = loader.resources.stoneTexture03.texture;
@@ -85,36 +85,37 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   // create array with repose and enemies rows numbers
   const rowsNumber = [];
-  calculateRowsNumbers(rowsNumber, 6, scene.height);
+  calculateRowsNumbers(rowsNumber, 8, scene.height);
 
   // boardStructure object
   const boardStructure = [];
 
   const drawEnemies = // array with enemies to add to row, cars/trains/trucks, textures, speed and amount
-    [{bg: road, texture: car01, speed: 1, amount: 1},
-      {bg: road, texture: car02, speed: 2, amount: 2},
-      {bg: road, texture: car03, speed: -2, amount: 3},
-      {bg: road, texture: car01, speed: -1, amount: 2}
+    [[road, [car01, car02, car03, truck], 1, 1, 'normal', 'enemy'],
+      [road, [car01, car02, car03, truck], 2, 2, 'normal', 'enemy'],
+      [road, [car01, car02, car03, truck], -2, 3, 'normal', 'enemy'],
+      [road, [car01, car02, car03, truck], -1, 2, 'normal', 'enemy']
     ];
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
-    [{bg: grass01, texture: car01, speed: 0, amount: 0},
-      {bg: water, texture: boat01, speed: 0, amount: 3},
-      {bg: water, texture: boat02, speed: 0, amount: 2},
-      {bg: grass01, texture: car01, speed: 0, amount: 1}
+    [[grass01, car01, 0, 0, 'normal', 'repose'],
+      [water, [boat01, boat02, stone01, stone02, stone03], -1, 3, 'normal', 'repose'],
+      [water, [boat01, boat02, stone02, stone02, stone03], 1, 2, 'normal', 'repose'],
+      [grass02, [car01, car02, car03], 0, 2, 'normal', 'repose'],
+      [grass01, [car01, car02, car03], 0, 3, 'normal', 'repose'],
     ];
 
   // function to create rows with enemies
   function initRepose(rowsNumber, rows, array, drawNumber) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
-      array[row] = new Row(scene, new PIXI.Sprite(drawRepose[drawNumber].bg), drawRepose[drawNumber].amount, drawRepose[drawNumber].texture, drawRepose[drawNumber].speed);
+      array[row] = new Row(scene, new PIXI.Sprite(drawRepose[drawNumber][0]), drawRepose[drawNumber][1], drawRepose[drawNumber][2], drawRepose[drawNumber][3], drawRepose[drawNumber][4], drawRepose[drawNumber][5]);
     }
   }
 
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const drawNumb = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(drawEnemies[drawNumb].bg), drawEnemies[drawNumb].amount, drawEnemies[drawNumb].texture, drawEnemies[drawNumb].speed);
+      array[row] = new Row(scene, new PIXI.Sprite(drawEnemies[drawNumb][0]), drawEnemies[drawNumb][1], drawEnemies[drawNumb][2], drawEnemies[drawNumb][3], drawEnemies[drawNumb][4], drawEnemies[drawNumb][5]);
     }
   }
 
@@ -122,15 +123,12 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     boardStructure[rows] = [];
     if (isEven(rows)) {
       const reposeRows = [];
-      if ( rows === 0 || rows === rowsNumber.length - 1) {
+      if (rows === 0 || rows === rowsNumber.length - 1) {
         initRepose(rowsNumber, rows, reposeRows, 0); // use func to create rows with enemies
-      }
-      else {
-        initRepose(rowsNumber, rows, reposeRows, Math.floor(Math.random() * 4)); // use func to create rows with enemies
-        console.log(rows)
+      } else {
+        initRepose(rowsNumber, rows, reposeRows, Math.ceil(Math.random() * 4)); // use func to create rows with enemies
       }
       boardStructure[rows] = reposeRows;
-      console.log(reposeRows)
     } else {
       const enemiesRows = [];
       initEnemies(rowsNumber, rows, enemiesRows); // use func to create rows with repose
@@ -138,13 +136,12 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     }
   }
 
-
-
   // main board object, after reduction
   const board = boardStructure.reduce((prev, curr) => prev.concat(curr));
   for (let rows = 0; rows < board.length; rows++) {
     const row = board[rows];
     app.stage.addChild(row);
+    console.log(row.type)
   }
 
   // game object (collision detection, functionality)
