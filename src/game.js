@@ -31,7 +31,7 @@ export class Game {
             }
             else {
               row.spriteArray[cols].x = cols * measure + 40;
-            }
+        }
       }
       row.y = rows * this.scene.scale;
       row.x = 0;
@@ -41,27 +41,23 @@ export class Game {
   checkCollisions() {
     for(let rows = 0; rows < this.board.length; rows++) {
       for(let cols = 0; cols < this.board[rows].spriteArray.length; cols++) {
-        if(this.board[rows].type === 'enemy') { // collision with enemy
-          if(collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
+        if(collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
+          if(this.board[rows].type === 'enemy') { // collision with enemy
               this.lose();
+          }
+          if(this.board[rows].state === 'floating' && this.board[rows].type === 'repose') {
+            if (this.frog.x < 0 || this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width) {
+              this.lose();
+            } else {
+              this.frog.x = this.board[rows].spriteArray[cols].x;
+              console.log('float')
             }
           }
-        if(this.board[rows].state === 'floating' && this.board[rows].type === 'repose') {
-            if(collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
-              if (this.frog.x < 0 || this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width) {
-                this.lose();
-              } else {
-                this.frog.x += this.board[rows].spriteArray[cols].speed;
-              }
-            }
-
-          } else if(this.board[rows].state === 'normal' && this.board[rows].type === 'repose') {
-            if(collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
-              this.frog.x = this.frog.x - this.board[rows].spriteArray[cols].width/2;
-              this.frog.y = this.frog.y - this.board[rows].spriteArray[cols].height/2;
-            }
+          if(this.board[rows].state === 'static' && this.board[rows].type === 'repose') {
+            console.log(this.frog.x, this.frog.y)
           }
-       }
+        }
+      }
     }
     if(collisionDetection(this.frog, this.home, this.home)) {
       this.win();

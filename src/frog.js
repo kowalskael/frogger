@@ -50,6 +50,12 @@ export class Frog extends PIXI.Container {
     }
   }
 
+  block() {
+    if (this.flag) {
+      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    }
+  }
+
   win() {
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
     this.spriteNormal.visible = false;

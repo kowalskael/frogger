@@ -125,8 +125,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     [[grass01, house, 0, 0, 'normal', 'repose'],
       [water, [boat02L, stone01], -1, 3, 'floating', 'repose'],
       [water, [boat02R, stone02], 1, 3, 'floating', 'repose'],
-      [grass02, house, 0, 1, 'normal', 'repose'],
-      [grass01, house, 0, 2, 'normal', 'repose'],
+      [grass02, house, 0, 1, 'static', 'repose'],
+      [grass01, house, 0, 2, 'static', 'repose'],
     ];
 
   // function to create rows with enemies
