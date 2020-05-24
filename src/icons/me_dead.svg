@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.93 24"><defs><style>.cls-1{fill:red;}</style></defs><g id="Warstwa_2" data-name="Warstwa 2"><g id="Warstwa_4" data-name="Warstwa 4"><path class="cls-1" d="M7.46,0A7.67,7.67,0,0,0,0,7.6C0,11.8,3.24,16.81,7.46,24c4.23-7.19,7.47-12.2,7.47-16.4A7.67,7.67,0,0,0,7.46,0Z"/></g></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Warstwa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     viewBox="0 -3 15 30" width=" 30px" height=" 30px"  xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FF2252;}
+	.st1{fill:#FF2252;}
+</style>
+<g id="Warstwa_2_1_">
+	<g id="Warstwa_4">
+		<g>
+			<path class="st0" d="M6.4,21.8C2.8,15.7,0.2,11.3,0.2,7.6c0-4,3.2-7.2,7.2-7.4c4,0.1,7.2,3.3,7.2,7.4c0,3.7-2.6,8.1-6.2,14.2
+				l-1,1.7L6.4,21.8z"/>
+			<path class="st1" d="M7.5,0.5c3.9,0.1,6.9,3.2,7,7.1c0,3.6-2.6,8-6.2,14.1C8,22.1,7.7,22.6,7.5,23c-0.3-0.5-0.5-0.9-0.8-1.4
+				c-3.6-6-6.1-10.4-6.1-14C0.5,3.7,3.6,0.6,7.5,0.5 M7.5,0C3.3,0.1,0,3.5,0,7.6c0,4.2,3.2,9.2,7.5,16.4c4.2-7.2,7.5-12.2,7.5-16.4
+				C14.9,3.5,11.6,0.1,7.5,0L7.5,0z"/>
+		</g>
+	</g>
+</g>
+</svg>

@@ -54,15 +54,6 @@ export class Frog extends PIXI.Container {
     removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
     this.spriteNormal.visible = false;
     this.spriteWin.visible = true;
-    console.log('WIN');
-  }
-
-  floating() {
-    // this.x === this.repose.x
-  }
-
-  block() {
-    // blokowanie 
   }
 
   lose() { // collision, time run out etc.
@@ -70,6 +61,5 @@ export class Frog extends PIXI.Container {
     this.flag = false;
     this.spriteNormal.visible = false;
     this.spriteDead.visible = true;
-    console.log('DEAD');
   }
 }
