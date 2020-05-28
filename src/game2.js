@@ -1,4 +1,4 @@
-import {distance, inRange, range, collisionDetection, isEven} from './math';
+import {distance, inRange, range, collisionDetection, isEven, rectangleCollision} from './math';
 
 export class Game {
   constructor(scene, frog, board, home) {
@@ -43,7 +43,7 @@ export class Game {
 
     for (let rows = 0; rows < this.board.length; rows++) {
       for (let cols = 0; cols < this.board[rows].spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
-
+        this.frog.update(delta);
         if (this.board[rows].type === 'log' && this.frog.y === this.board[rows].y) {
           if (inRange(this.frog.x, 0, this.board[rows].spriteArray[cols].x - this.board[rows].spriteArray[cols].width / 2) || inRange(this.frog.x, this.board[rows].spriteArray[cols].x + this.board[rows].spriteArray[cols].width / 2, this.scene.width * this.scene.scale)) {
             this.lose();
@@ -62,13 +62,16 @@ export class Game {
             if (this.flag) {
               this.frog.x += this.board[rows].spriteArray[cols].speed * delta;
             }
-
-          }
-          if (this.board[rows].type === 'static') { // stop on boundaries
-            console.log('static block');
           }
         }
 
+        if (this.board[rows].type === 'static') { // stop on boundaries
+          if(rectangleCollision(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
+            console.log('true')
+          }
+
+          //console.log('static block');
+        }
       }
     }
 
@@ -76,7 +79,6 @@ export class Game {
       this.win();
     }
 
-    this.frog.update(delta);
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       row.update(delta);
