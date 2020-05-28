@@ -23,7 +23,7 @@ import boatTexture02L from './icons/boat_02.png';
 import boatTexture01L from './icons/boat_01L.png';
 import boatTexture02R from './icons/boat_02R.png';
 import houseTexture from './icons/house.png';
-import {Game} from './game';
+import {Game} from './game2';
 import {Frog} from './frog';
 import {Row} from './row';
 import {isEven} from './math';
@@ -123,8 +123,8 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
     [[grass01, house, 0, 0, 'static'],
-      [water, [boat02L, stone01], -1, 3, 'log'],
-      [water, [boat02R, stone02], 1, 3, 'log'],
+      [water, [boat02L, stone01], -1, 1, 'log'],
+      [water, [boat02R, stone02], 1, 1, 'log'],
       [grass02, house, 0, 1, 'static'],
       [grass01, house, 0, 2, 'static'],
     ];

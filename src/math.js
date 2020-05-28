@@ -1,6 +1,9 @@
 export const distance = (x0, y0, x1, y1) =>
   Math.hypot(x1 - x0, y1 - y0);
 
+export const inRange = (value, min, max) =>
+  value >= Math.min(min, max) && value <= Math.max(min, max);
+
 export const range = (min0, max0, min1, max1) =>
   Math.max(min0, max0) > Math.min(min1, max1) && Math.min(min0, max0) < Math.max(min1, max1);
 
