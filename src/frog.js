@@ -8,6 +8,7 @@ export class Frog extends PIXI.Container {
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
     this.flag = true;
+    this.attached = null;
   }
 
   init() { // start, after the prev frog is win/lose
@@ -44,7 +45,16 @@ export class Frog extends PIXI.Container {
     }
   };
 
-  update() { // one key down, one square move
+  attach(repose) {
+    this.attached = repose;
+  }
+
+  update(delta) { // one key down, one square move
+    if (this.attached != null) {
+      this.x += this.attached.speed * delta;
+    } else {
+
+    }
     if (this.flag) {
       addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
     }

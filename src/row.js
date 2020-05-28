@@ -3,14 +3,13 @@ import {Enemy} from './enemy';
 import {isEven} from './math';
 
 export class Row extends PIXI.Container {
-  constructor(scene, bg, texture, speed, amount, state, type) {
+  constructor(scene, bg, texture, speed, amount, type) {
     super();
     this.scene = scene;
     this.bg = bg;
     this.amount = amount;
     this.texture = texture;
     this.speed = speed;
-    this.state = state;
     this.type = type;
     this.width = this.scene.scale * this.scene.width;
     this.height = this.scene.scale;

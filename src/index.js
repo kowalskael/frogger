@@ -115,31 +115,31 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const boardStructure = [];
 
   const drawEnemies = // array with enemies to add to row, cars/trains/trucks, textures, speed and amount
-    [[road, [car01R, car02R, car03R, truckR], 1, 1, 'normal', 'enemy'],
-      [road, [car01R, car02R, car03R, truckR], 1, 2, 'normal', 'enemy'],
-      [road, [car01L, car02L, car03L, truckL], -1, 2, 'normal', 'enemy'],
-      [road, [car01L, car02L, car03L, truckL], -1, 2, 'normal', 'enemy']
+    [[road, [car01R, car02R, car03R, truckR], 1, 1, 'enemy'],
+      [road, [car01R, car02R, car03R, truckR], 1, 2, 'enemy'],
+      [road, [car01L, car02L, car03L, truckL], -1, 2, 'enemy'],
+      [road, [car01L, car02L, car03L, truckL], -1, 2, 'enemy']
     ];
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
-    [[grass01, house, 0, 0, 'normal', 'repose'],
-      [water, [boat02L, stone01], -1, 3, 'floating', 'repose'],
-      [water, [boat02R, stone02], 1, 3, 'floating', 'repose'],
-      [grass02, house, 0, 1, 'static', 'repose'],
-      [grass01, house, 0, 2, 'static', 'repose'],
+    [[grass01, house, 0, 0, 'static'],
+      [water, [boat02L, stone01], -1, 3, 'log'],
+      [water, [boat02R, stone02], 1, 3, 'log'],
+      [grass02, house, 0, 1, 'static'],
+      [grass01, house, 0, 2, 'static'],
     ];
 
   // function to create rows with enemies
   function initRepose(rowsNumber, rows, array, drawNumber) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
-      array[row] = new Row(scene, new PIXI.Sprite(drawRepose[drawNumber][0]), drawRepose[drawNumber][1], drawRepose[drawNumber][2], drawRepose[drawNumber][3], drawRepose[drawNumber][4], drawRepose[drawNumber][5]);
+      array[row] = new Row(scene, new PIXI.Sprite(drawRepose[drawNumber][0]), drawRepose[drawNumber][1], drawRepose[drawNumber][2], drawRepose[drawNumber][3], drawRepose[drawNumber][4]);
     }
   }
 
   function initEnemies(rowsNumber, rows, array) {
     for (let row = 0; row < rowsNumber[rows]; row++) {
       const drawNumb = Math.floor(Math.random() * 4);
-      array[row] = new Row(scene, new PIXI.Sprite(drawEnemies[drawNumb][0]), drawEnemies[drawNumb][1], drawEnemies[drawNumb][2], drawEnemies[drawNumb][3], drawEnemies[drawNumb][4], drawEnemies[drawNumb][5]);
+      array[row] = new Row(scene, new PIXI.Sprite(drawEnemies[drawNumb][0]), drawEnemies[drawNumb][1], drawEnemies[drawNumb][2], drawEnemies[drawNumb][3], drawEnemies[drawNumb][4]);
     }
   }
 
@@ -202,6 +202,5 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   // game update, advances the game simulation one step, runs AI, then physics
   function gameLoop(delta) {
     game.update(delta);
-    game.checkCollisions();
   }
 });

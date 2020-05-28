@@ -65,7 +65,32 @@ export class Game {
   }
 
   update(delta) { // one key down, one square move
-    this.frog.update();
+
+    for(let rows = 0; rows < this.board.length; rows++) {
+      for(let cols = 0; cols < this.board[rows].spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+        if(collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
+          if(this.board[rows].type === 'enemy') { // collision with enemy
+            this.lose();
+          }
+          if(this.board[rows].type === 'log') {
+            this.frog.attach(this.board[rows].spriteArray[cols]);
+          }
+          if(this.board[rows].type === 'static' ) {
+            console.log(this.frog.x, this.frog.y)
+          }
+        }
+      }
+    }
+
+    if (this.frog.x < 1 || this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width ) {
+      this.lose();
+    }
+    
+    if(collisionDetection(this.frog, this.home, this.home)) {
+      this.win();
+    }
+
+    this.frog.update(delta);
      for(let rows = 0; rows < this.board.length; rows++) {
           const row = this.board[rows];
           row.update(delta);

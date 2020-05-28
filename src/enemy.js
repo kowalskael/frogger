@@ -28,7 +28,7 @@ export class Enemy extends PIXI.Container {
     if (this.speed > 0 && this.x > (this.scene.scale * this.scene.width)) { //
       this.x = 0;
     }
-    if (this.speed < 0 && this.x < 0) { //
+    if (this.speed < 0 && this.x + this.width < 0) { //
       this.x = this.scene.scale * this.scene.width;
     }
   }
