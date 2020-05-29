@@ -22,15 +22,15 @@ export class Game {
       for (let cols = 0; cols < row.spriteArray.length; cols++) {
         let measure = row.width / row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
         if (isEven(rows)) {
-          if (isEven(rows) && row.state === 'normal' && row.type === 'repose') {
-            row.spriteArray[cols].x = 30 + cols * measure + Math.ceil((Math.random() * 100));
+          if (isEven(rows) && row.type === 'static') {
+            row.spriteArray[cols].x = cols * measure + Math.ceil((Math.random() * 100));
           } else {
             row.spriteArray[cols].x = cols * measure;
           }
-        } else if (row.state === 'normal' && row.type === 'repose') {
-          row.spriteArray[cols].x = 20 + cols * measure + Math.ceil((Math.random() * 50));
+        } else if (row.type === 'static') {
+          row.spriteArray[cols].x = row.spriteArray[cols].width * 4 + cols * measure + Math.ceil((Math.random() * 50));
         } else {
-          row.spriteArray[cols].x = cols * measure + 40;
+          row.spriteArray[cols].x = cols * measure;
         }
 
       }
@@ -67,7 +67,7 @@ export class Game {
 
         if (this.board[rows].type === 'static') { // stop on boundaries
           if(rectangleCollision(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
-            console.log('true')
+
           }
 
           //console.log('static block');
