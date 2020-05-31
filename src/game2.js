@@ -25,10 +25,10 @@ export class Game {
           if (isEven(rows) && row.type === 'static') {
             row.spriteArray[cols].x = cols * measure + Math.ceil((Math.random() * 100));
           } else {
-            row.spriteArray[cols].x = cols * measure;
+            row.spriteArray[cols].x = row.spriteArray[cols].width * 2 + cols * measure;
           }
         } else if (row.type === 'static') {
-          row.spriteArray[cols].x = row.spriteArray[cols].width * 4 + cols * measure + Math.ceil((Math.random() * 50));
+          row.spriteArray[cols].x = row.spriteArray[cols].width + cols * measure + Math.ceil((Math.random() * 50));
         } else {
           row.spriteArray[cols].x = cols * measure;
         }
@@ -45,9 +45,26 @@ export class Game {
       for (let cols = 0; cols < this.board[rows].spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
         this.frog.update(delta);
         if (this.board[rows].type === 'log' && this.frog.y === this.board[rows].y) {
-          if (inRange(this.frog.x, 0, this.board[rows].spriteArray[cols].x - this.board[rows].spriteArray[cols].width / 2) || inRange(this.frog.x, this.board[rows].spriteArray[cols].x + this.board[rows].spriteArray[cols].width / 2, this.scene.width * this.scene.scale)) {
-            this.lose();
-            this.flag = false;
+          let curr = this.board[rows].spriteArray[cols];
+          let prev = this.board[rows].spriteArray[cols-1];
+          let next = this.board[rows].spriteArray[cols+1];
+          if(cols === 0) {
+            if (inRange(this.frog.x, 0, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, next.x - next.width/2)) {
+              this.lose();
+              this.flag = false;
+            }
+          }
+          if(cols === 1) {
+            if (inRange(this.frog.x, prev.x + prev.width / 2, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, next.x - next.width/2)) {
+              this.lose();
+              this.flag = false;
+            }
+          }
+          if(cols === 2) {
+            if (inRange(this.frog.x, prev.x + prev.width / 2, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, this.scene.width * this.scene.scale)) {
+              this.lose();
+              this.flag = false;
+            }
           }
         }
 

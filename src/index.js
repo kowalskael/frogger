@@ -117,14 +117,14 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
   const drawEnemies = // array with enemies to add to row, cars/trains/trucks, textures, speed and amount
     [[road, [car01R, car02R, car03R, truckR], 1, 1, 'enemy'],
       [road, [car01R, car02R, car03R, truckR], 1, 2, 'enemy'],
-      [road, [car01L, car02L, car03L, truckL], -1, 2, 'enemy'],
-      [road, [car01L, car02L, car03L, truckL], -1, 2, 'enemy']
+      [road, [car01L, car02L, car03L, truckL], -1.5, 2, 'enemy'],
+      [road, [car01L, car02L, car03L, truckL], -1.5, 2, 'enemy']
     ];
 
   const drawRepose = // array with repose to add to row, grass/turtles/logs, textures, speed and amount
     [[grass01, house, 0, 0, 'static'],
-      [water, [boat02L, stone01], -1, 1, 'log'],
-      [water, [boat02R, stone02], 1, 1, 'log'],
+      [water, [boat02L, stone01], -1, 3, 'log'],
+      [water, [boat02R, stone02], 1, 3, 'log'],
       [grass02, house, 0, 1, 'static'],
       [grass01, house, 0, 2, 'static'],
     ];
