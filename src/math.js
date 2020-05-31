@@ -18,7 +18,7 @@ function rectangleCollision(
   r1, r2, r3,
 ) {
 
-  let collision = 'up';
+  let dir = 'up';
 
   if (r1.x <= r2.x + r2.width &&
     r1.x + r1.width >= r2.x &&
@@ -26,19 +26,20 @@ function rectangleCollision(
     r1.y + r3.height >= r3.y) {
     if (r1.x  <= r2.x ) {
       console.log('left ');
-      r1.x -= r1.width/2;
+      dir = 'left';
+      r1.x -= r1.width;
     }
     if (r1.x  >= r2.x ) {
       console.log('right ')
-      //r1.x += r1.width/2;
+      r1.x += r1.width;
     }
     if (r1.y  <= r3.y  ) {
       console.log('top')
-      //r1.y -= r1.width/2;
+      r1.y -= r1.width;
     }
     if (r1.y >= r3.y  ) {
       console.log('down')
-      //r1.y += r1.width/2;
+      r1.y += r1.width;
     }
 
 
