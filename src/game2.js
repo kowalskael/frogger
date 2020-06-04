@@ -1,4 +1,4 @@
-import {distance, inRange, range, collisionDetection, isEven, rectangleCollision} from './math';
+import {inRange, collisionDetection, isEven, setDirection} from './math';
 
 export class Game {
   constructor(scene, frog, board, home) {
@@ -41,64 +41,33 @@ export class Game {
 
   update(delta) { // one key down, one square move
 
-    for (let rows = 0; rows < this.board.length; rows++) {
-      for (let cols = 0; cols < this.board[rows].spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
-        this.frog.update(delta);
-        if (this.board[rows].type === 'log' && this.frog.y === this.board[rows].y) {
-          let curr = this.board[rows].spriteArray[cols];
-          let prev = this.board[rows].spriteArray[cols-1];
-          let next = this.board[rows].spriteArray[cols+1];
-          if(cols === 0) {
-            if (inRange(this.frog.x, 0, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, next.x - next.width/2)) {
-              this.lose();
-              this.flag = false;
-            }
-          }
-          if(cols === 1) {
-            if (inRange(this.frog.x, prev.x + prev.width / 2, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, next.x - next.width/2)) {
-              this.lose();
-              this.flag = false;
-            }
-          }
-          if(cols === 2) {
-            if (inRange(this.frog.x, prev.x + prev.width / 2, curr.x - curr.width / 2) || inRange(this.frog.x, curr.x + curr.width / 2, this.scene.width * this.scene.scale)) {
-              this.lose();
-              this.flag = false;
-            }
-          }
-        }
+    this.frog.update(delta);
 
-        if (collisionDetection(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
-          if (this.board[rows].type === 'enemy') { // collision with enemy
+    for (let rows = 0; rows < this.board.length; rows++) {
+      const row = this.board[rows];
+      row.update(delta);
+      for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+        if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
+          if (row.type === 'enemy') { // ran over by enemy
             this.lose();
           }
-          if (this.board[rows].type === 'log') { // float with the log
-            if (this.frog.x < 1 || this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width) {
+          if (row.type === 'log') { // hit with log row
+            if (this.detectWater()) { // death if found in water
               this.lose();
             }
-            if (this.flag) {
-              this.frog.x += this.board[rows].spriteArray[cols].speed * delta;
+            if (!this.detectWater()) { // float with the log
+              this.setFloating();
             }
           }
-        }
-
-        if (this.board[rows].type === 'static') { // stop on boundaries
-          if(rectangleCollision(this.frog, this.board[rows].spriteArray[cols], this.board[rows])) {
-
+          if (row.type === 'static') { // stop on boundaries
+            this.blockMovement(this.frog, row.spriteArray[cols], row);
           }
-
-          //console.log('static block');
         }
       }
     }
 
     if (collisionDetection(this.frog, this.home, this.home)) {
       this.win();
-    }
-
-    for (let rows = 0; rows < this.board.length; rows++) {
-      const row = this.board[rows];
-      row.update(delta);
     }
   }
 
@@ -107,9 +76,41 @@ export class Game {
   }
 
   lose() { // collision, time run out etc.
-    this.frog.lose();
     this.frog.width = this.scene.scale;
     this.frog.height = this.scene.scale;
+    this.frog.lose();
+  }
+
+  blockMovement(frog, col, row) { // block movement by setting the direction of bounce
+    let dir = setDirection(frog, col, row); // set the bounce directions
+    this.frog.x += dir.x; // change x coordinates
+    this.frog.y += dir.y; // change y coordinates
+    console.log(this.frog.x, this.frog.y)
+  }
+
+  setFloating() { // set the direction of floating on the log
+    for (let rows = 0; rows < this.board.length; rows++) {
+      const row = this.board[rows];
+      for (let cols = 0; cols < row.spriteArray.length; cols++) {
+        this.frog.x += row.spriteArray[cols].speed * delta;
+      }
+    }
+    if (this.frog.x < 1 || this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width) {
+      this.lose();
+    }
+  }
+
+  detectWater() { // water detection
+    let waterDetected = false;
+
+    for (let rows = 0; rows < this.board.length; rows++) {
+      const row = this.board[rows];
+      for (let cols = 0; cols < row.spriteArray.length; cols++) {
+
+      }
+    }
+
+    return waterDetected;
   }
 
 }

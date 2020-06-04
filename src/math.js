@@ -13,36 +13,23 @@ export const collisionDetection = (r0, r1, r2) =>
 
 export const isEven = value => !(value % 2);
 
-export
-function rectangleCollision(
-  r1, r2, r3,
-) {
-
-  let dir = 'up';
-
-  if (r1.x <= r2.x + r2.width &&
-    r1.x + r1.width >= r2.x &&
-    r1.y <= r3.y + r3.height &&
-    r1.y + r3.height >= r3.y) {
-    if (r1.x  <= r2.x ) {
-      console.log('left ');
-      r1.x -= r1.width;
-    }
-    if (r1.x  >= r2.x ) {
-      console.log('right ')
-      r1.x += r1.width;
-    }
-    if (r1.y <= r3.y  ) {
-      console.log('top')
-      r1.y -= r1.height;
-    }
-    if (r1.y >= r3.y  ) {
-      console.log('down')
-      r1.y += r1.height;
-    }
+export function setDirection(r1, r2, r3) {
+  let dir = {x: 0, y: 0};
+  if (r1.x <= r2.x) { // block from left
+    dir = {x: -1, y: 0};
+    console.log(dir);
+  }
+  if (r1.x >= r2.x) { // block from right
+    dir = {x: 1, y: 0};
+    console.log(dir);
+  }
+  if (r1.y <= r3.y) { // block from top
+    dir = {x: 0, y: -1};
+  }
+  if (r1.y >= r3.y) { // block from down
+    dir = {x: 0, y: 1};
   }
 
-
-
+  return dir;
 }
 

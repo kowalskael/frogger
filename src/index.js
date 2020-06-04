@@ -30,6 +30,8 @@ import {isEven} from './math';
 import {calculateRowsNumbers} from "./boardStructure";
 import {Calculator} from "./calculator.js";
 
+// spacetime-movement-pattern/pathVisualizer/, individual, crashers, floaters, blockers, drawners
+
 const calc = Calculator.value(10).mul(1).add(2).div(3.3).sub(3);
 
 // create scene object, to pass dimentions
