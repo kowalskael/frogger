@@ -23,12 +23,12 @@ export class Game {
         let measure = row.width / row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
         if (isEven(rows)) {
           if (isEven(rows) && row.type === 'static') {
-            row.spriteArray[cols].x = cols * measure + Math.ceil((Math.random() * 100));
+            row.spriteArray[cols].x = cols * measure;
           } else {
             row.spriteArray[cols].x = row.spriteArray[cols].width * 2 + cols * measure;
           }
         } else if (row.type === 'static') {
-          row.spriteArray[cols].x = row.spriteArray[cols].width + cols * measure + Math.ceil((Math.random() * 50));
+          row.spriteArray[cols].x = row.spriteArray[cols].width + cols * measure;
         } else {
           row.spriteArray[cols].x = cols * measure;
         }
@@ -37,11 +37,13 @@ export class Game {
       row.y = rows * this.scene.scale;
       row.x = 0;
     }
+
+
   }
 
   update(delta) { // one key down, one square move
 
-    this.frog.update(delta);
+    this.frog.update();
 
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
@@ -82,10 +84,9 @@ export class Game {
   }
 
   blockMovement(frog, col, row) { // block movement by setting the direction of bounce
-    let dir = setDirection(frog, col, row); // set the bounce directions
+    let dir = setDirection(frog, col, row, true); // set the bounce directions
     this.frog.x += dir.x; // change x coordinates
     this.frog.y += dir.y; // change y coordinates
-    console.log(this.frog.x, this.frog.y)
   }
 
   setFloating() { // set the direction of floating on the log

@@ -1,3 +1,5 @@
+export const isEven = value => !(value % 2);
+
 export const distance = (x0, y0, x1, y1) =>
   Math.hypot(x1 - x0, y1 - y0);
 
@@ -11,25 +13,37 @@ export const collisionDetection = (r0, r1, r2) =>
   range(r0.x - r0.width / 2, r0.x + r0.width / 2, r1.x - r1.width / 2, r1.x + r1.width / 2) &&
   range(r0.y - r0.height / 2, r0.y + r0.height / 2, r2.y - r2.height / 2, r2.y + r2.height / 2);
 
-export const isEven = value => !(value % 2);
-
-export function setDirection(r1, r2, r3) {
+export function setDirection(frog, col, row, flag) {
   let dir = {x: 0, y: 0};
-  if (r1.x <= r2.x) { // block from left
-    dir = {x: -1, y: 0};
-    console.log(dir);
-  }
-  if (r1.x >= r2.x) { // block from right
-    dir = {x: 1, y: 0};
-    console.log(dir);
-  }
-  if (r1.y <= r3.y) { // block from top
-    dir = {x: 0, y: -1};
-  }
-  if (r1.y >= r3.y) { // block from down
-    dir = {x: 0, y: 1};
-  }
 
+  if (frog.x <= col.x) { // block from left
+    if (flag) {
+      dir = {x: -1, y: 0};
+      flag = false;
+    }
+  }
+  if (frog.x >= col.x) { // block from right
+    if (flag) {
+      dir = {x: 1, y: 0};
+      flag = false;
+      console.log(frog.x, col.x);
+    }
+  }
+  if (frog.y <= row.y) { // block from top
+    if (flag) {
+      dir = {x: 0, y: -1};
+      flag = false;
+      console.log(frog.y, row.y);
+    }
+  }
+  if (frog.y >= row.y) { // block from down
+    if (flag) {
+      dir = {x: 0, y: 1};
+      flag = false;
+      console.log(frog.y, row.y);
+    }
+  }
+  console.log(dir);
   return dir;
 }
 

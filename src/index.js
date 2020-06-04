@@ -199,6 +199,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
     app.ticker.add((delta) => {
       gameLoop(delta);
     });
+
   }
 
   // game update, advances the game simulation one step, runs AI, then physics

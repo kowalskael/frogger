@@ -8,6 +8,7 @@ export class Frog extends PIXI.Container {
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
     this.flag = true;
+    this.dir = {x: 0, y: 0};
   }
 
   init() { // start, after the prev frog is win/lose
@@ -21,49 +22,55 @@ export class Frog extends PIXI.Container {
   keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
     switch (e.key) {
       case 'ArrowDown':
-        if (this.y < (this.board.height * this.board.scale) - this.height) {
-          this.y += this.height; // move frog down
-        }
+        this.dir = {x: 0, y: 1};
+        this.flag = true;
         break;
       case 'ArrowUp':
-        if (this.y > this.height / 2) {
-          this.y -= this.height; // move frog up
-        }
+        this.dir = {x: 0, y: -1};
+        this.flag = true;
         break;
       case 'ArrowLeft':
-        if (this.x > this.width / 2) {
-          this.x -= this.width; // move frog left
-        }
+        this.dir = {x: -1, y: 0};
+        this.flag = true;
         break;
       case 'ArrowRight':
-        if (this.x < (this.board.width * this.board.scale) - this.width) {
-          this.x += this.width; // move frog right
-        }
+        this.dir = {x: 1, y: 0};
+        this.flag = true;
         break;
       default:
     }
   };
 
   update() { // one key down, one square move
-    if (this.flag) {
-      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    if(this.flag) {
+      addEventListener('keydown', this.keyDown);
+      this.x += this.dir.x * this.width;
+      this.y += this.dir.y * this.height;
+      this.flag = false;
     }
-  }
 
-  block() {
-    if (this.flag) {
-      addEventListener('keydown', this.keyDown); // przypisanie funkcjonalności klawiszy
+    if (this.x >= (this.board.width * this.board.scale) - this.width) {
+      this.x = (this.board.width * this.board.scale) - this.width;
+    }
+    if (this.x <= 0) {
+      this.x = 0;
+    }
+    if (this.y >= (this.board.height * this.board.scale) - this.height) {
+      this.y = (this.board.height * this.board.scale) - this.height;
+    }
+    if (this.y <= 0) {
+      this.y = 0;
     }
   }
 
   win() {
-    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
+    this.dir = {x: 0, y: 0};
     this.spriteNormal.visible = false;
     this.spriteWin.visible = true;
   }
 
   lose() { // collision, time run out etc.
-    removeEventListener('keydown', this.keyDown); // usuń możliwość ruszania żabą
+    this.dir = {x: 0, y: 0};
     this.flag = false;
     this.spriteNormal.visible = false;
     this.spriteDead.visible = true;
