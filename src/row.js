@@ -19,7 +19,6 @@ export class Row extends PIXI.Container {
       if (Array.isArray(this.texture)) {
         const drawTexture = Math.floor(Math.random() * (this.texture.length));
         spriteArray[cols] = new Enemy(this.scene, this).setTexture(new PIXI.Sprite(this.texture[drawTexture])).setSpeed(this.speed); // assign as much new Enemy as stated in index.js
-
       } else {
         spriteArray[cols] = new Enemy(this.scene, this).setTexture(new PIXI.Sprite(this.texture)).setSpeed(this.speed); // assign as much new Enemy as stated in index.js
       }
