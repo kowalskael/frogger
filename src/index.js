@@ -204,6 +204,7 @@ app.loader.add('frogTexturePlay', frogTexturePlay)
 
   // game update, advances the game simulation one step, runs AI, then physics
   function gameLoop(delta) {
+    game.processInput();
     game.update(delta);
   }
 });

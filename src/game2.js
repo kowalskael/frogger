@@ -7,6 +7,8 @@ export class Game {
     this.board = board;
     this.home = home;
     this.flag = true;
+    this.dir = {x: 0, y: 0};
+    this.gameOver = false;
   }
 
   init() {
@@ -32,19 +34,43 @@ export class Game {
         } else {
           row.spriteArray[cols].x = cols * measure;
         }
-
       }
       row.y = rows * this.scene.scale;
       row.x = 0;
     }
+  }
 
+  keyDown = (e) => { // keys to move frog
+    switch (e.key) {
+      case 'ArrowDown':
+        this.dir = {x: 0, y: 1};
+        this.flag = true;
+        break;
+      case 'ArrowUp':
+        this.dir = {x: 0, y: -1};
+        this.flag = true;
+        break;
+      case 'ArrowLeft':
+        this.dir = {x: -1, y: 0};
+        this.flag = true;
+        break;
+      case 'ArrowRight':
+        this.dir = {x: 1, y: 0};
+        this.flag = true;
+        break;
+      default:
+    }
+  };
 
+  processInput() {
+    addEventListener('keydown', this.keyDown);
+    if(this.flag && !this.gameOver) {
+      this.frog.move(this.dir);
+      this.flag = false;
+    }
   }
 
   update(delta) { // one key down, one square move
-
-    this.frog.update();
-
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       row.update(delta);
@@ -61,9 +87,9 @@ export class Game {
               this.setFloating();
             }
           }
-          if (row.type === 'static') { // stop on boundaries
-            this.blockMovement(this.frog, row.spriteArray[cols], row);
-          }
+        }
+        if (row.type === 'static') { // stop on boundaries
+          this.blockMovement(this.frog, row.spriteArray[cols], row);
         }
       }
     }
@@ -78,13 +104,14 @@ export class Game {
   }
 
   lose() { // collision, time run out etc.
+    this.gameOver = true;
     this.frog.width = this.scene.scale;
     this.frog.height = this.scene.scale;
     this.frog.lose();
   }
 
   blockMovement(frog, col, row) { // block movement by setting the direction of bounce
-    let dir = setDirection(frog, col, row, true); // set the bounce directions
+    let dir = setDirection(frog, col, row); // set the bounce directions
     this.frog.x += dir.x; // change x coordinates
     this.frog.y += dir.y; // change y coordinates
   }

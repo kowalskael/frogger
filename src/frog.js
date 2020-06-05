@@ -7,8 +7,6 @@ export class Frog extends PIXI.Container {
     this.spriteNormal = spriteNormal;
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
-    this.flag = true;
-    this.dir = {x: 0, y: 0};
   }
 
   init() { // start, after the prev frog is win/lose
@@ -19,35 +17,9 @@ export class Frog extends PIXI.Container {
     this.spriteWin.visible = false;
   }
 
-  keyDown = (e) => { // przypisanie klawiszy do zmiany położenia żaby
-    switch (e.key) {
-      case 'ArrowDown':
-        this.dir = {x: 0, y: 1};
-        this.flag = true;
-        break;
-      case 'ArrowUp':
-        this.dir = {x: 0, y: -1};
-        this.flag = true;
-        break;
-      case 'ArrowLeft':
-        this.dir = {x: -1, y: 0};
-        this.flag = true;
-        break;
-      case 'ArrowRight':
-        this.dir = {x: 1, y: 0};
-        this.flag = true;
-        break;
-      default:
-    }
-  };
-
-  update() { // one key down, one square move
-    if(this.flag) {
-      addEventListener('keydown', this.keyDown);
-      this.x += this.dir.x * this.width;
-      this.y += this.dir.y * this.height;
-      this.flag = false;
-    }
+  move(dir) { // one key down, one square move
+    this.x += dir.x * this.width;
+    this.y += dir.y * this.height;
 
     if (this.x >= (this.board.width * this.board.scale) - this.width) {
       this.x = (this.board.width * this.board.scale) - this.width;
@@ -64,14 +36,11 @@ export class Frog extends PIXI.Container {
   }
 
   win() {
-    this.dir = {x: 0, y: 0};
     this.spriteNormal.visible = false;
     this.spriteWin.visible = true;
   }
 
   lose() { // collision, time run out etc.
-    this.dir = {x: 0, y: 0};
-    this.flag = false;
     this.spriteNormal.visible = false;
     this.spriteDead.visible = true;
   }
