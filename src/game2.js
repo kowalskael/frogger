@@ -22,7 +22,7 @@ export class Game {
       const row = this.board[rows];
       row.init();
       for (let cols = 0; cols < row.spriteArray.length; cols++) {
-        let measure = row.width / row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
+        let measure = row.width/row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
         if (isEven(rows)) {
           if (isEven(rows) && row.type === 'static') {
             row.spriteArray[cols].x = cols * measure;
@@ -87,9 +87,9 @@ export class Game {
               this.setFloating(delta);
             }
           }
-          if (row.type === 'static') { // stop on boundaries
-            this.blockMovement(this.frog, row.spriteArray[cols], row);
-          }
+        }
+        if (row.type === 'static') { // stop on boundaries
+          this.blockMovement(this.frog, row.spriteArray[cols], row);
         }
       }
     }
@@ -104,17 +104,23 @@ export class Game {
 
   blockMovement(frog, col, row) { // block movement by setting the direction of bounce
     let dir = setDirection(frog, col, row); // set the bounce directions
-    this.frog.x += dir.x; // change x coordinates
-    this.frog.y += dir.y; // change y coordinates
+    this.frog.x += dir.x * this.frog.width; // change x coordinates
+    this.frog.y += dir.y * this.frog.height; // change y coordinates
   }
 
   detectWater() { // water detection
-    let waterDetected = false;
+    let waterDetected = true;
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       for (let cols = 0; cols < row.spriteArray.length; cols++) {
+        if(collisionDetection(this.frog, row.spriteArray[cols], row)) {
+          waterDetected = false;
+        } else {
+          waterDetected = true;
+        }
       }
     }
+
     return waterDetected;
   }
 
