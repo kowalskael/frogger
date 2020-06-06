@@ -18,14 +18,12 @@ export function setDirection(frog, col, row) {
 
   let vx = (frog.x + frog.width/2) - (col.x + col.width/2); // vector of collision x, LEFT = (-), RIGHT = (+)
   let vy = (frog.y + frog.height/2) - (row.y + row.height/2);
-  let combinedHalfWidth = frog.height/2 + row.height/2;
-  let combinedHalfHeight = frog.width/2 + col.width/2;
 
-  if (Math.abs(vy) <= combinedHalfHeight) {
-    if (Math.abs(vx) <= combinedHalfWidth) {
+  if (Math.abs(vy) < frog.height + row.height) {
+    if (Math.abs(vx) < frog.width + col.width) {
       let overlapX = (frog.width/2 + col.width/2) - Math.abs(vx);
       let overlapY = (frog.height/2 + row.height/2) - Math.abs(vy);
-
+      console.log('collide', frog.x, col.x)
       if (overlapX <= overlapY) {
         if (vx < 0) { // block from left
           dir = {x: -1, y: 0};

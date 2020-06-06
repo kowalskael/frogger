@@ -22,7 +22,7 @@ export class Game {
       const row = this.board[rows];
       row.init();
       for (let cols = 0; cols < row.spriteArray.length; cols++) {
-        let measure = row.width/row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
+        let measure = row.width / row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
         if (isEven(rows)) {
           if (isEven(rows) && row.type === 'static') {
             row.spriteArray[cols].x = cols * measure;
@@ -79,19 +79,25 @@ export class Game {
           if (row.type === 'enemy') { // ran over by enemy
             this.lose();
           }
-          if (row.type === 'log') { // if collision is detected
-            if (this.detectWater()) { // death if found in water
-              this.lose();
-            }
-            if (!this.detectWater()) { // float with the log
-              this.setFloating(delta);
-            }
-          }
         }
         if (row.type === 'static') { // stop on boundaries
           this.blockMovement(this.frog, row.spriteArray[cols], row);
         }
       }
+      if (row.type === 'log' && collisionDetection(this.frog, row, row)) { // if collision is detected
+        let ok = false;
+        for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+          if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
+            ok = true;
+            this.setFloating(row.spriteArray[cols], delta);
+          }
+        }
+
+        if(!ok) {
+          this.lose();
+        }
+      }
+
     }
   }
 
@@ -108,34 +114,15 @@ export class Game {
     this.frog.y += dir.y * this.frog.height; // change y coordinates
   }
 
-  detectWater() { // water detection
-    let waterDetected = true;
-    for (let rows = 0; rows < this.board.length; rows++) {
-      const row = this.board[rows];
-      for (let cols = 0; cols < row.spriteArray.length; cols++) {
-        if(collisionDetection(this.frog, row.spriteArray[cols], row)) {
-          waterDetected = false;
-        } else {
-          waterDetected = true;
-        }
-      }
-    }
+  setFloating(log, delta) { // set the direction of floating on the log
+    this.frog.attach(log, delta);
 
-    return waterDetected;
-  }
-
-  setFloating(delta) { // set the direction of floating on the log
-    for (let rows = 0; rows < this.board.length; rows++) {
-      for (let cols = 0; cols < this.board[rows].spriteArray.length; cols++) {
-        //this.frog.x += this.board[rows].spriteArray[cols].speed * delta;
-      }
-    }
     if (this.frog.x < 0) {
       this.frog.x = 0;
       this.lose();
     }
-    if (this.frog.x > (this.scene.width * this.scene.scale) - this.frog.width) {
-      this.frog.x = (this.board.width * this.board.scale) - this.frog.width;
+    if (this.frog.x >= (this.scene.width * this.scene.scale) - this.frog.width) {
+      this.frog.x = (this.scene.width * this.scene.scale) - this.frog.width;
       this.lose();
     }
   }
