@@ -1,4 +1,4 @@
-import {collisionDetection, isEven, setDirection} from './math';
+import {collisionDetection, isEven} from './math';
 
 export class Game {
   constructor(scene, frog, board, home) {
@@ -9,6 +9,7 @@ export class Game {
     this.flag = true;
     this.dir = {x: 0, y: 0};
     this.gameOver = false;
+    addEventListener('keydown', this.keyDown);
   }
 
   init() {
@@ -62,15 +63,15 @@ export class Game {
     }
   };
 
-  processInput() {
-    addEventListener('keydown', this.keyDown);
-    if (this.flag && !this.gameOver) {
+  update(delta) { // one key down, one square move
+
+    let staticCollide = false;
+
+    if (this.flag && !this.gameOver && !staticCollide) {
       this.frog.move(this.dir);
       this.flag = false;
     }
-  }
 
-  update(delta) { // one key down, one square move
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       row.update(delta);
@@ -80,7 +81,12 @@ export class Game {
       }
 
       if (row.type === 'static') { // stop on boundaries
-        this.blockMovement(this.frog, row);
+        for (let cols = 0; cols < row.spriteArray.length; cols++) {
+          if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
+            staticCollide = true;
+            console.log('staticcollide', staticCollide)
+          }
+        }
       }
 
       if (row.type === 'log' && !this.gameOver) { // if collision is detected
@@ -105,28 +111,6 @@ export class Game {
     }
   }
 
-  blockMovement(frog, row) { // block movement by setting the direction of bounce
-    let dir = {x: 0, y: 0};
-    let collision;
-    for (let cols = 0; cols < row.spriteArray.length; cols++) {
-      collision = setDirection(frog, row.spriteArray[cols], row); // set the bounce directions
-      if (collision === 'left') { // block from left
-        dir = {x: -1, y: 0};
-      }
-      if (collision === 'right') { // block from right
-        dir = {x: 1, y: 0};
-      }
-      if (collision === 'top') {
-        dir = {x: 0, y: -1};
-      }
-      if (collision === 'bottom') { // block from down
-        dir = {x: 0, y: 1};
-      }
-      frog.x += dir.x * frog.width; // change x coordinates
-      frog.y += dir.y * frog.height; // change y coordinates
-    }
-  }
-
   detectLog(frog, row, delta) {
     if (collisionDetection(frog, row, row)) {
       let waterDetected = false;
@@ -144,7 +128,6 @@ export class Game {
 
   setFloating(log, delta) { // set the direction of floating on the log
     this.frog.attach(log, delta);
-
     if (this.frog.x < 0) {
       this.frog.x = 0;
       this.lose();
