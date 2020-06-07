@@ -22,8 +22,12 @@ export class Frog extends PIXI.Container {
   }
 
   move(dir) { // one key down, one square move
+    this.oldX = this.x;
+    this.oldY = this.y;
+
     this.x += dir.x * this.width;
     this.y += dir.y * this.height;
+
 
     if (this.x >= (this.board.width * this.board.scale) - this.width) {
       this.x = (this.board.width * this.board.scale) - this.width;

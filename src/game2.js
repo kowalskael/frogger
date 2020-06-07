@@ -81,12 +81,7 @@ export class Game {
       }
 
       if (row.type === 'static') { // stop on boundaries
-        for (let cols = 0; cols < row.spriteArray.length; cols++) {
-          if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
-            staticCollide = true;
-            console.log('staticcollide', staticCollide)
-          }
-        }
+        this.oldPosition(this.frog, row);
       }
 
       if (row.type === 'log' && !this.gameOver) { // if collision is detected
@@ -107,6 +102,15 @@ export class Game {
     for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
       if (collisionDetection(frog, row.spriteArray[cols], row)) { // if collision is detected
         this.lose();
+      }
+    }
+  }
+
+  oldPosition(frog, row) {
+    for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+      if (collisionDetection(frog, row.spriteArray[cols], row)) {
+        frog.x = frog.oldX;
+        frog.y = frog.oldY;
       }
     }
   }
