@@ -74,28 +74,17 @@ export class Game {
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       row.update(delta);
-      for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
-        if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
-          if (row.type === 'enemy') { // ran over by enemy
-            this.lose();
-          }
-        }
-        if (row.type === 'static') { // stop on boundaries
-          this.blockMovement(this.frog, row.spriteArray[cols], row);
-        }
-      }
-      if (row.type === 'log' && collisionDetection(this.frog, row, row)) { // if collision is detected
-        let ok = false;
-        for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
-          if (collisionDetection(this.frog, row.spriteArray[cols], row)) { // if collision is detected
-            ok = true;
-            this.setFloating(row.spriteArray[cols], delta);
-          }
-        }
 
-        if(!ok) {
-          this.lose();
-        }
+      if (row.type === 'enemy') { // ran over by enemy
+        this.detectCar(this.frog, row);
+      }
+
+      if (row.type === 'static') { // stop on boundaries
+        this.blockMovement(this.frog, row);
+      }
+
+      if (row.type === 'log' && !this.gameOver) { // if collision is detected
+        this.detectLog(this.frog, row, delta);
       }
 
     }
@@ -108,10 +97,36 @@ export class Game {
     this.frog.lose();
   }
 
-  blockMovement(frog, col, row) { // block movement by setting the direction of bounce
-    let dir = setDirection(frog, col, row); // set the bounce directions
-    this.frog.x += dir.x * this.frog.width; // change x coordinates
-    this.frog.y += dir.y * this.frog.height; // change y coordinates
+  detectCar(frog, row) {
+    for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+      if (collisionDetection(frog, row.spriteArray[cols], row)) { // if collision is detected
+        this.lose();
+      }
+    }
+  }
+
+  blockMovement(frog, row) { // block movement by setting the direction of bounce
+    let dir;
+    for (let cols = 0; cols < row.spriteArray.length; cols++) {
+      dir = setDirection(frog, row.spriteArray[cols], row); // set the bounce directions
+      frog.x += dir.x * frog.width; // change x coordinates
+      frog.y += dir.y * frog.height; // change y coordinates
+    }
+  }
+
+  detectLog(frog, row, delta) {
+    if (collisionDetection(frog, row, row)) {
+      let waterDetected = false;
+      for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
+        if (collisionDetection(frog, row.spriteArray[cols], row)) { // if collision is detected
+          waterDetected = true;
+          this.setFloating(row.spriteArray[cols], delta);
+        }
+      }
+      if (!waterDetected) {
+        this.lose();
+      }
+    }
   }
 
   setFloating(log, delta) { // set the direction of floating on the log

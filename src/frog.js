@@ -7,7 +7,6 @@ export class Frog extends PIXI.Container {
     this.spriteNormal = spriteNormal;
     this.spriteDead = spriteDead;
     this.spriteWin = spriteWin;
-    this.attached = null;
   }
 
   init() { // start, after the prev frog is win/lose
@@ -19,14 +18,7 @@ export class Frog extends PIXI.Container {
   }
 
   attach(log, delta) {
-    this.attached = log;
-
-    if (this.attached !== null) {
-      this.x += this.attached.speed * delta;
-      console.log(this.attached.speed)
-    }
-
-
+    this.x += log.speed * delta;
   }
 
   move(dir) { // one key down, one square move
