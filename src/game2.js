@@ -64,10 +64,7 @@ export class Game {
   };
 
   update(delta) { // one key down, one square move
-
-    let staticCollide = false;
-
-    if (this.flag && !this.gameOver && !staticCollide) {
+    if (this.flag && !this.gameOver) {
       this.frog.move(this.dir);
       this.flag = false;
     }
@@ -75,19 +72,15 @@ export class Game {
     for (let rows = 0; rows < this.board.length; rows++) {
       const row = this.board[rows];
       row.update(delta);
-
       if (row.type === 'enemy') { // ran over by enemy
         this.detectCar(this.frog, row);
       }
-
       if (row.type === 'static') { // stop on boundaries
-        this.oldPosition(this.frog, row);
+        this.detectStatic(this.frog, row);
       }
-
       if (row.type === 'log' && !this.gameOver) { // if collision is detected
         this.detectLog(this.frog, row, delta);
       }
-
     }
   }
 
@@ -106,7 +99,7 @@ export class Game {
     }
   }
 
-  oldPosition(frog, row) {
+  detectStatic(frog, row) {
     for (let cols = 0; cols < row.spriteArray.length; cols++) { // check for the whole board with objects, frog vs enemies, logs, statics
       if (collisionDetection(frog, row.spriteArray[cols], row)) {
         frog.x = frog.oldX;
