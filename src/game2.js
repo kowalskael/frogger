@@ -1,4 +1,4 @@
-import {inRange, collisionDetection, isEven, setDirection, range} from './math';
+import {collisionDetection, isEven, setDirection} from './math';
 
 export class Game {
   constructor(scene, frog, board, home) {
@@ -25,12 +25,12 @@ export class Game {
         let measure = row.width / row.spriteArray.length; // child is positioned in parent coordinates, x = 0, y = 0 is left top corner of parent
         if (isEven(rows)) {
           if (isEven(rows) && row.type === 'static') {
-            row.spriteArray[cols].x = cols * measure;
+            row.spriteArray[cols].x = 2 * row.spriteArray[cols].width + cols * measure;
           } else {
             row.spriteArray[cols].x = row.spriteArray[cols].width * 2 + cols * measure;
           }
         } else if (row.type === 'static') {
-          row.spriteArray[cols].x = row.spriteArray[cols].width + cols * measure;
+          row.spriteArray[cols].x = 4 * row.spriteArray[cols].width + cols * measure;
         } else {
           row.spriteArray[cols].x = cols * measure;
         }
@@ -106,9 +106,22 @@ export class Game {
   }
 
   blockMovement(frog, row) { // block movement by setting the direction of bounce
-    let dir;
+    let dir = {x: 0, y: 0};
+    let collision;
     for (let cols = 0; cols < row.spriteArray.length; cols++) {
-      dir = setDirection(frog, row.spriteArray[cols], row); // set the bounce directions
+      collision = setDirection(frog, row.spriteArray[cols], row); // set the bounce directions
+      if (collision === 'left') { // block from left
+        dir = {x: -1, y: 0};
+      }
+      if (collision === 'right') { // block from right
+        dir = {x: 1, y: 0};
+      }
+      if (collision === 'top') {
+        dir = {x: 0, y: -1};
+      }
+      if (collision === 'bottom') { // block from down
+        dir = {x: 0, y: 1};
+      }
       frog.x += dir.x * frog.width; // change x coordinates
       frog.y += dir.y * frog.height; // change y coordinates
     }
